@@ -1,6 +1,6 @@
 <template>
-  <div class="app-wrapper" :class="{hideSidebar: sidebarOpened}">
-    <sidebar class="sidebar-container"></sidebar>
+  <div class="app-wrapper" :class="{hideSidebar: isCollapse}">
+    <sidebar :routes="routes" :isCollapse="isCollapse" class="sidebar-container"></sidebar>
     <div class="main-container">
       <navbar></navbar>
       <app-main></app-main>
@@ -10,18 +10,23 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { Navbar, Sidebar, AppMain } from '@/views/layout'
+import Navbar from './Navbar'
+import AppMain from './AppMain'
+import Sidebar from '@/components/Sidebar'
 
 export default {
-  name: 'layout',
+  name: 'Layout',
   components: {
     Navbar,
     Sidebar,
     AppMain
   },
   computed: {
-    sidebarOpened() {
-      return this.sidebar.opened
+    isCollapse() {
+      return this.sidebar.isCollapse
+    },
+    routes() {
+      return this.$router.options.routes
     },
     ...mapGetters([
       'sidebar'

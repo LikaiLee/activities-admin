@@ -11,7 +11,8 @@ export default {
   name: 'AppMain',
   computed: {
     key() {
-      return this.$route.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date()
+      const route = this.$route
+      return route.name ? route.name + +new Date() : route + +new Date()
     }
   }
 }

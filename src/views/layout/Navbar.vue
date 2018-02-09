@@ -1,12 +1,12 @@
 <template>
-  <el-menu class="navbar" mode="horizontal">
+  <el-menu class="navbar" mode="horizontal" v-if="user">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-    <levelbar></levelbar>
+    <breadcrumb />
     <tabs-view></tabs-view>
     <screenfull class='screenfull'></screenfull>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
+        <img class="user-avatar" :src="user.avatar">
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
@@ -15,13 +15,13 @@
             首页
           </el-dropdown-item>
         </router-link>
-        <a target='_blank' href="https://github.com/PanJiaChen/vue-element-admin/">
+        <a href="#">
           <el-dropdown-item>
             项目地址
           </el-dropdown-item>
         </a>
         <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">退出登录</span>
+          <span @click="logout">退出登录</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -30,14 +30,14 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Levelbar from './Levelbar'
 import TabsView from '@/components/TabsView'
 import Hamburger from '@/components/Hamburger'
+import Breadcrumb from '@/components/Breadcrumb'
 import Screenfull from '@/components/Screenfull'
 
 export default {
   components: {
-    Levelbar,
+    Breadcrumb,
     TabsView,
     Hamburger,
     Screenfull
@@ -49,8 +49,7 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'name',
-      'avatar'
+      'user'
     ])
   },
   methods: {

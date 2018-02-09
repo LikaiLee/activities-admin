@@ -7,7 +7,9 @@ import {
 import {
   login
 } from '@/api/login'
-
+import {
+  getUserInfo
+} from '@/api/user'
 const user = {
   state: {
     user: null,
@@ -29,7 +31,6 @@ const user = {
         login(userInfo).then(res => {
           const token = res.data.data.token
           commit(types.SET_TOKEN, token)
-          commit(types.SET_USER, res.data.data)
           setToken(token)
           resolve(res.data)
         }).catch(err => {
@@ -42,6 +43,18 @@ const user = {
     }) {
       commit(types.SET_TOKEN, '')
       removeToken()
+    },
+    getUserInfo({
+      commit
+    }, payload) {
+      return new Promise((resolve, reject) => {
+        getUserInfo(payload).then(res => {
+          commit(types.SET_USER, res.data.data)
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
     }
   }
 }

@@ -5,21 +5,20 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import SidebarItem from './SidebarItem'
 export default {
-  computed: {
-    routes() {
-      const routes = this.$router.options.routes
-      return routes
+  name: 'Sidebar',
+  props: {
+    isCollapse: {
+      type: Boolean,
+      default: true
     },
-    isCollapse() {
-      const isCollapse = this.sidebar.opened
-      return isCollapse
-    },
-    ...mapGetters([
-      'sidebar'
-    ])
+    routes: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
   },
   components: {
     SidebarItem

@@ -4,7 +4,7 @@ const _import = require('./_import_' + process.env.NODE_ENV)
 
 Vue.use(Router)
 
-import Layout from '@/views/layout/Layout'
+import Layout from '@/views/layout'
 
 const routerMap = [
   {
@@ -33,13 +33,14 @@ const routerMap = [
   {
     path: '/test',
     component: Layout,
-    name: '测试',
-    icon: 'table',
+    name: '下拉',
+    icon: 'code',
     noDropdown: false,
     children: [{
-      path: '',
-      component: _import('test/index'),
-      name: 'test'
+      path: '/',
+      name: 'test',
+      icon: 'bug',
+      component: _import('test/index')
     }]
   },
   {

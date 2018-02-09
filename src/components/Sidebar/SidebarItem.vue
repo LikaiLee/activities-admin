@@ -2,7 +2,7 @@
   <div class='menu-wrapper'>
     <template v-for="(item, index) in routes">
 
-      <router-link :key="index" v-if="!item.hidden&&item.noDropdown&&item.children.length>0" :to="item.path+item.children[0].path">
+      <router-link :key="index" v-if="!item.hidden&&item.noDropdown&&item.children.length" :to="item.path+item.children[0].path">
         <el-menu-item :index="item.path+item.children[0].path" class='submenu-title-noDropdown'>
           <i v-if='item.icon' :class="'el-icon-fa-' + item.icon"></i>
           <span slot="title" class="menu-title">{{item.children[0].name}}</span>
@@ -16,7 +16,7 @@
         </template>
         <template v-for="(child, index) in item.children" v-if='!child.hidden'>
 
-          <sidebar-item :key="index" class='menu-indent' v-if='child.children&&child.children.length>0' :routes='[child]'> </sidebar-item>
+          <sidebar-item :key="index" class='menu-indent' v-if='child.children&&child.children.length' :routes='[child]'> </sidebar-item>
 
           <router-link :key="index" v-else :to="item.path+child.path">
             <el-menu-item :index="item.path+child.path">
@@ -47,7 +47,6 @@ export default {
 .menu-title {
   margin-left: 10px;
 }
-
 </style>
 
 

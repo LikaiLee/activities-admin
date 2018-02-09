@@ -3,24 +3,28 @@ import types from '../mutation-types'
 const app = {
   state: {
     sidebar: {
-      opened: !localStorage.getItem('sidebarStatus')
+      isCollapse: !!localStorage.getItem('SIDEBAR_COLLAPSE')
     },
     visitedViews: []
   },
   mutations: {
     [types.TOGGLE_SIDEBAR](state) {
-      const newOpened = !state.sidebar.opened
-      localStorage.setItem('sidebarStatus', newOpened)
-      state.sidebar.opened = newOpened
+      if (state.sidebar.isCollapse) {
+        localStorage.setItem('SIDEBAR_COLLAPSE', '')
+        state.sidebar.isCollapse = false
+      } else {
+        localStorage.setItem('SIDEBAR_COLLAPSE', 'collapse')
+        state.sidebar.isCollapse = true
+      }
     },
-    ADD_VISITED_VIEWS: (state, view) => {
+    [types.ADD_VISITED_VIEWS](state, view) {
       if (state.visitedViews.some(v => v.path === view.path)) return
       state.visitedViews.push({
         name: view.name,
         path: view.path
       })
     },
-    DEL_VISITED_VIEWS: (state, view) => {
+    [types.DEL_VISITED_VIEWS](state, view) {
       let index
       for (const [i, v] of state.visitedViews.entries()) {
         if (v.path === view.path) {
@@ -40,14 +44,14 @@ const app = {
     addVisitedViews({
       commit
     }, view) {
-      commit('ADD_VISITED_VIEWS', view)
+      commit(types.ADD_VISITED_VIEWS, view)
     },
     delVisitedViews({
       commit,
       state
     }, view) {
       return new Promise((resolve) => {
-        commit('DEL_VISITED_VIEWS', view)
+        commit(types.DEL_VISITED_VIEWS, view)
         resolve([...state.visitedViews])
       })
     }

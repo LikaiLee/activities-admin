@@ -1,14 +1,12 @@
 # activities-admin
 
-> 学生课外活动管理系统
-
 ## Build Setup
 
 ``` bash
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at localhost:1337
 npm run dev
 
 # build for production with minification
