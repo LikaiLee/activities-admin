@@ -42,6 +42,7 @@ export default {
   font-size: 14px;
   line-height: 50px;
   margin-left: 20px;
+  outline: 0;
   .no-redirect {
     color: #97a8be;
     cursor: text;

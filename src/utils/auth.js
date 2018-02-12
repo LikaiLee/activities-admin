@@ -1,5 +1,3 @@
-// import Cookies from 'js-cookie'
-
 const TOKEN_KEY = 'TOKEN_ACTIVITIES'
 export const getToken = () => {
   return localStorage.getItem(TOKEN_KEY)

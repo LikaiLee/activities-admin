@@ -21,7 +21,7 @@
           </el-dropdown-item>
         </a>
         <el-dropdown-item divided>
-          <span @click="logout">退出登录</span>
+          <span @click="logOut">退出登录</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -53,13 +53,14 @@ export default {
     ])
   },
   methods: {
-    logout() {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload()// 为了重新实例化vue-router对象 避免bug
+    logOut() {
+      this.logout().then(() => {
+        setTimeout(() => { window.location.reload() }, 100)// 为了重新实例化vue-router对象 避免bug
       })
     },
     ...mapActions([
-      'toggleSideBar'
+      'toggleSideBar',
+      'logout'
     ])
   }
 }
@@ -87,6 +88,7 @@ export default {
     position: absolute;
     right: 90px;
     top: 16px;
+    outline: 0;
     color: red;
   }
   .avatar-container {

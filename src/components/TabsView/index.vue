@@ -1,7 +1,7 @@
 <template>
   <div class='tabs-view-container'>
     <router-link class="tabs-view" v-for="tag in visitedViews" :to="tag.path" :key="tag.path">
-      <el-tag :closable="true" :type="isActive(tag.path)?'success':''" @close='closeViewTabs(tag, $event)'>
+      <el-tag :closable="true" :type="isActive(tag.path)?'':'info'" @close='closeViewTabs(tag, $event)'>
         {{tag.name}}
       </el-tag>
     </router-link>
@@ -66,6 +66,7 @@ export default {
   display: inline-block;
   vertical-align: top;
   margin-left: 10px;
+  outline: 0;
   .tabs-view {
     margin-left: 10px;
   }

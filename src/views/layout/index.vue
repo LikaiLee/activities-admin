@@ -26,10 +26,13 @@ export default {
       return this.sidebar.isCollapse
     },
     routes() {
-      return this.$router.options.routes
+      // console.log(this.permissionRoutes)
+      // return this.$router.options.routes
+      return this.permissionRoutes
     },
     ...mapGetters([
-      'sidebar'
+      'sidebar',
+      'permissionRoutes'
     ])
   }
 }

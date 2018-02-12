@@ -6,7 +6,7 @@ import {
   getToken
 } from '@/utils/auth'
 
-const whiteList = ['/login', '/404'] // 不重定向地址
+const whiteList = ['/login', '/404', '/noredirect', '/test'] // 不重定向地址
 router.beforeEach((to, from, next) => {
   NProgress.start()
   // 未登录 全部重定向至登录界面
@@ -24,11 +24,21 @@ router.beforeEach((to, from, next) => {
     } else {
       if (!store.getters.user) {
         store.dispatch('getUserInfo', 'token').then(res => {
-          console.log(res)
+          const _routes = [{
+            path: '/test',
+            name: '测试',
+            icon: 'table'
+          }]
+          store.dispatch('generateRoutes', _routes).then(res => {
+            router.addRoutes(store.getters.permissionRoutes)
+            next({ ...to })
+          })
         })
       }
       next()
     }
+    const title = to.name ? to.name + ' - ' : ''
+    document.title = title + '学生课外活动管理系统'
   }
 
   NProgress.done()

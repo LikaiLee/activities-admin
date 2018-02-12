@@ -1,3 +1,4 @@
+import md5 from 'md5'
 import types from '../mutation-types'
 import {
   getToken,
@@ -7,6 +8,9 @@ import {
 import {
   login
 } from '@/api/login'
+import {
+  logout
+} from '@/api/logout'
 import {
   getUserInfo
 } from '@/api/user'
@@ -26,30 +30,49 @@ const user = {
   actions: {
     login({
       commit
-    }, userInfo) {
+    }, {
+      username,
+      password
+    }) {
       return new Promise((resolve, reject) => {
-        login(userInfo).then(res => {
-          const token = res.data.data.token
+        password = md5(password)
+        const timestamp = new Date().getTime()
+        const nonce = Math.round(2147483647 * Math.random()) * timestamp % 1e10
+        login({
+          timestamp,
+          nonce,
+          username,
+          password
+        }).then((res) => {
+          const token = res.data
           commit(types.SET_TOKEN, token)
           setToken(token)
-          resolve(res.data)
+          resolve(res)
         }).catch(err => {
           reject(err)
         })
       })
     },
     logout({
-      commit
+      commit,
+      state
     }) {
-      commit(types.SET_TOKEN, '')
-      removeToken()
+      return new Promise((resolve, reject) => {
+        logout(state.token).then(() => {
+          commit(types.SET_TOKEN, '')
+          removeToken()
+          resolve()
+        }).catch(err => {
+          reject(err)
+        })
+      })
     },
     getUserInfo({
       commit
     }, payload) {
       return new Promise((resolve, reject) => {
         getUserInfo(payload).then(res => {
-          commit(types.SET_USER, res.data.data)
+          commit(types.SET_USER, res.data)
           resolve(res)
         }).catch(err => {
           reject(err)

@@ -25,14 +25,8 @@ const app = {
       })
     },
     [types.DEL_VISITED_VIEWS](state, view) {
-      let index
-      for (const [i, v] of state.visitedViews.entries()) {
-        if (v.path === view.path) {
-          index = i
-          break
-        }
-      }
-      state.visitedViews.splice(index, 1)
+      const newViews = state.visitedViews.filter(v => v.path !== view.path)
+      state.visitedViews = newViews
     }
   },
   actions: {
