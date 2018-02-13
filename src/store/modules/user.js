@@ -6,13 +6,8 @@ import {
   removeToken
 } from '@/utils/auth'
 import {
-  login
-} from '@/api/login'
-import {
+  login,
   logout
-} from '@/api/logout'
-import {
-  getUserInfo
 } from '@/api/user'
 const user = {
   state: {
@@ -35,7 +30,7 @@ const user = {
       password
     }) {
       return new Promise((resolve, reject) => {
-        password = md5(password)
+        password = md5(password).toUpperCase()
         const timestamp = new Date().getTime()
         const nonce = Math.round(2147483647 * Math.random()) * timestamp % 1e10
         login({
@@ -58,7 +53,7 @@ const user = {
       state
     }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
+        logout().then(() => {
           commit(types.SET_TOKEN, '')
           removeToken()
           resolve()
@@ -69,14 +64,9 @@ const user = {
     },
     getUserInfo({
       commit
-    }, payload) {
-      return new Promise((resolve, reject) => {
-        getUserInfo(payload).then(res => {
-          commit(types.SET_USER, res.data)
-          resolve(res)
-        }).catch(err => {
-          reject(err)
-        })
+    }) {
+      commit(types.SET_USER, {
+        name: 'LikaiLee'
       })
     }
   }

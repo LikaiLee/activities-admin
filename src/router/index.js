@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import {
-  defaultRoutes
-} from './routes'
+import routes from './defaultRoutes'
 Vue.use(Router)
 
 const router = new Router({
@@ -10,7 +8,7 @@ const router = new Router({
   scrollBehavior: () => ({
     y: 0
   }),
-  routes: defaultRoutes
+  routes
 })
 
 export default router

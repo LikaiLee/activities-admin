@@ -31,14 +31,17 @@ service.interceptors.request.use(config => {
 // respone拦截器
 service.interceptors.response.use(
   response => {
-    const url = response.request.responseURL
-    console.log(url.substr(url.lastIndexOf('/')), response.data)
+    const debug = process.env.NODE_ENV !== 'production'
+    if (debug) {
+      const url = response.request.responseURL
+      console.log(url.substr(url.lastIndexOf('/')), response.data)
+    }
 
     const {
-      code,
+      status,
       message
     } = response.data
-    if (code !== 200) {
+    if (status !== 200) {
       Message({
         message: message,
         type: 'error',

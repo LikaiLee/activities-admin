@@ -1,37 +1,34 @@
 import types from '../mutation-types'
-import Layout from '@/views/layout'
+import generateRoutes from '@/utils/generateRoutes'
+import defaultRoutes from '@/router/defaultRoutes'
 import {
-  defaultRoutes
-} from '@/router/routes'
-const _import = require('@/router/_import_' + process.env.NODE_ENV)
+  getRoutes
+} from '@/api/user'
+
 const permission = {
   state: {
-    routes: []
+    routes: defaultRoutes, // 所有可访问的路由，用于构建侧边栏菜单
+    newRoutes: [] // 新增路由，用于动态构建路由表
   },
   mutations: {
     [types.SET_ROUTES](state, routes) {
-      state.routes = defaultRoutes.concat(routes)
+      state.newRoutes = routes
+      state.routes = [...defaultRoutes, ...routes]
     }
   },
   actions: {
     generateRoutes({
       commit
-    }, routes) {
-      const newRoutes = []
-      routes.forEach((router) => {
-        newRoutes.push({
-          path: router.path,
-          component: Layout,
-          noDropdown: true,
-          icon: router.icon,
-          children: [{
-            path: '',
-            name: router.name,
-            component: _import(router.path.substr(1) + '/index')
-          }]
+    }) {
+      return new Promise((resolve, reject) => {
+        getRoutes().then(res => {
+          const newRoutes = generateRoutes(res.data)
+          commit(types.SET_ROUTES, newRoutes)
+          resolve()
+        }).catch((err) => {
+          reject(err)
         })
       })
-      commit(types.SET_ROUTES, newRoutes)
     }
   }
 }

@@ -25,20 +25,11 @@
 </template>
 
 <script>
-// import axios from 'axios'
-// import qs from 'qs'
-import { mapActions, mapGetters } from 'vuex'
-// import { isvalidUsername } from '@/utils/validate'
-
+import { mapActions } from 'vuex'
 export default {
   name: 'login',
   data() {
     const validateUsername = (rule, value, callback) => {
-      /* if (!isvalidUsername(value)) {
-        callback(new Error('请输入正确的用户名'))
-      } else {
-        callback()
-      } */
       callback()
     }
     const validatePass = (rule, value, callback) => {
@@ -50,8 +41,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'aaa',
-        password: '123'
+        username: 'yxm',
+        password: '1'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -59,15 +50,6 @@ export default {
       },
       loading: false
     }
-  },
-  created() {
-    /* axios({
-      url: 'http://120.25.240.194:8080/token',
-      method: 'post',
-      data: qs.stringify({ username: 'aaa', password: '123' })
-    }).then(res => {
-      console.log(res.data)
-    }) */
   },
   methods: {
     handleLogin() {
@@ -78,7 +60,6 @@ export default {
         }
         this.loading = true
         this.login(this.loginForm).then((res) => {
-          // console.log(res)
           this.loading = false
           this.$router.push({ path: '/' })
         }).catch(() => {
@@ -88,11 +69,6 @@ export default {
     },
     ...mapActions([
       'login'
-    ])
-  },
-  computed: {
-    ...mapGetters([
-      'token'
     ])
   }
 }

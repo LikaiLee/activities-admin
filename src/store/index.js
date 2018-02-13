@@ -8,8 +8,6 @@ import permission from './modules/permission'
 
 Vue.use(Vuex)
 
-const debug = process.env.NODE_ENV !== 'production'
-
 export default new Vuex.Store({
   getters,
   modules: {
@@ -17,6 +15,5 @@ export default new Vuex.Store({
     user,
     permission
   },
-  strict: debug,
-  plugins: debug ? [createLogger()] : []
+  plugins: process.env.NODE_ENV !== 'production' ? [createLogger()] : []
 })

@@ -1,12 +1,14 @@
 <template>
-  <el-menu class="navbar" mode="horizontal" v-if="user">
+  <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <breadcrumb />
     <tabs-view></tabs-view>
     <screenfull class='screenfull'></screenfull>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img class="user-avatar" :src="user.avatar">
+        <div class="username">
+          {{ user.name }}
+        </div>
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
@@ -15,14 +17,11 @@
             首页
           </el-dropdown-item>
         </router-link>
-        <a href="#">
-          <el-dropdown-item>
-            项目地址
+        <div @click.prevent="logOut">
+          <el-dropdown-item divided>
+            退出登录
           </el-dropdown-item>
-        </a>
-        <el-dropdown-item divided>
-          <span @click="logOut">退出登录</span>
-        </el-dropdown-item>
+        </div>
       </el-dropdown-menu>
     </el-dropdown>
   </el-menu>
@@ -86,7 +85,7 @@ export default {
   }
   .screenfull {
     position: absolute;
-    right: 90px;
+    right: 120px;
     top: 16px;
     outline: 0;
     color: red;
@@ -100,14 +99,16 @@ export default {
       cursor: pointer;
       margin-top: 5px;
       position: relative;
-      .user-avatar {
-        width: 40px;
+      .username {
+        width: 70px;
         height: 40px;
-        border-radius: 10px;
+        line-height: 40px;
+        font-size: 14px;
+        text-align: center;
       }
       .el-icon-caret-bottom {
         position: absolute;
-        right: -20px;
+        right: 0;
         top: 25px;
         font-size: 12px;
       }
