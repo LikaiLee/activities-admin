@@ -14,6 +14,11 @@ export default [{
     component: _import('errorPage/404')
   },
   {
+    path: '/test',
+    hidden: true,
+    component: _import('test/index')
+  },
+  {
     path: '/',
     redirect: '/home',
     component: Layout,

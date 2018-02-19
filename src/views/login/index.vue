@@ -1,12 +1,15 @@
 <template>
   <div class="login">
+    <div class="inform-cont">
+      <inform :data="informs" />
+    </div>
     <div class="login-cont">
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <i class="el-icon-fa-arrow-circle-right"></i>
           欢迎登录
         </div>
-        <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm">
+        <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" class="login-form">
           <el-form-item prop="username">
             <el-input v-model="loginForm.username" autoComplete="on" placeholder="用户名" prefix-icon="el-icon-fa-user"></el-input>
           </el-form-item>
@@ -26,6 +29,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+import Inform from './inform'
+import { fetchInformByPage } from '@/api/inform'
 export default {
   name: 'login',
   data() {
@@ -48,8 +53,14 @@ export default {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
-      loading: false
+      loading: false,
+      informs: []
     }
+  },
+  mounted() {
+    fetchInformByPage(0).then((res) => {
+      this.informs = res.data
+    })
   },
   methods: {
     handleLogin() {
@@ -70,6 +81,9 @@ export default {
     ...mapActions([
       'login'
     ])
+  },
+  components: {
+    Inform
   }
 }
 </script>
@@ -92,6 +106,16 @@ export default {
     .btn-submit {
       width: 100%;
     }
+    .login-form {
+      padding: 20px;
+    }
+  }
+
+  .inform-cont {
+    position: absolute;
+    top: 50%;
+    left: 6%;
+    transform: translateY(-60%);
   }
 }
 </style>

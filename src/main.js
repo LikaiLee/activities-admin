@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import './permission' // 权限控制
+import './mock'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)

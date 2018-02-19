@@ -2,7 +2,7 @@ import types from '../mutation-types'
 import generateRoutes from '@/utils/generateRoutes'
 import defaultRoutes from '@/router/defaultRoutes'
 import {
-  getRoutes
+  fetchRoutes
 } from '@/api/user'
 
 const permission = {
@@ -21,7 +21,7 @@ const permission = {
       commit
     }) {
       return new Promise((resolve, reject) => {
-        getRoutes().then(res => {
+        fetchRoutes().then(res => {
           const newRoutes = generateRoutes(res.data)
           commit(types.SET_ROUTES, newRoutes)
           resolve()

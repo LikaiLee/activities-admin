@@ -6,7 +6,7 @@ import {
   getToken
 } from '@/utils/auth'
 
-const whiteList = ['/login', '/404', '/noredirect'] // 不重定向地址
+const whiteList = ['/login', '/404', '/noredirect', '/test'] // 不重定向地址
 router.beforeEach((to, from, next) => {
   NProgress.start()
   // 未登录 全部重定向至登录界面
@@ -25,9 +25,11 @@ router.beforeEach((to, from, next) => {
       if (!store.getters.user) {
         // 构建可访问的路由表
         store.dispatch('generateRoutes').then(() => {
-          store.dispatch('getUserInfo') // 获取用户信息
           router.addRoutes(store.getters.newRoutes) // 动态添加新增路由
-          next({ ...to
+          // 获取用户信息
+          store.dispatch('getUserInfo').then(() => {
+            next({ ...to
+            })
           })
         }).catch((err) => {
           console.error(err)

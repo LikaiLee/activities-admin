@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{user}}
+    Home {{user}}
   </div>
 </template>
 <script>
