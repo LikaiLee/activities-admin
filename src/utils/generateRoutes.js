@@ -6,7 +6,7 @@ const _import = require('@/router/_import_' + process.env.NODE_ENV)
  * @return {Array}
  */
 export default function generateRoutes(routes = []) {
-  const newRoutes = generate(routes)
+  const newRoutes = _generate(routes)
   newRoutes.push({
     path: '*',
     hidden: true,
@@ -15,7 +15,7 @@ export default function generateRoutes(routes = []) {
   return newRoutes
 }
 
-function generate(routes) {
+function _generate(routes) {
   const newRoutes = []
   routes.forEach((router) => {
     const {

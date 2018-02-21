@@ -12,7 +12,7 @@ router.beforeEach((to, from, next) => {
   // 未登录 全部重定向至登录界面
   if (!getToken()) {
     // 避免死循环
-    if (whiteList.indexOf(to.path) !== -1) {
+    if (whiteList.indexOf(to.path) !== -1 || to.path.indexOf('/inform/detail') !== -1) {
       next()
     } else {
       next('/login')

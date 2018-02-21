@@ -19,6 +19,11 @@ export default [{
     component: _import('test/index')
   },
   {
+    path: '/inform/detail/:id',
+    hidden: true,
+    component: _import('inform/detail/index')
+  },
+  {
     path: '/',
     redirect: '/home',
     component: Layout,

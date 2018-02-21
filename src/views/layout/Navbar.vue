@@ -7,7 +7,7 @@
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <div class="username">
-          {{ user.realname }}
+          {{ user.realName }}
         </div>
         <i class="el-icon-caret-bottom"></i>
       </div>

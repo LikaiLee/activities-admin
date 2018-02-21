@@ -34,7 +34,7 @@
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="toggleDialog">取 消</el-button>
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="update">确 定</el-button>
       </div>
     </el-dialog>
@@ -43,7 +43,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchInformByUserId, adminDeleteInformById, adminUpdateInformById } from '@/api/inform'
+import { fetchInformByUserId, userDeleteInformById, userUpdateInformById } from '@/api/inform'
 export default {
   data() {
     return {
@@ -57,46 +57,38 @@ export default {
     }
   },
   mounted() {
-    this._fetchData()
+    this.listLoading = true
+    fetchInformByUserId(this.user.id).then(res => {
+      this.list = res.data
+      this.listLoading = false
+    }).catch(() => {
+      this.listLoading = false
+    })
   },
   methods: {
     update() {
       const { informId, title, content } = this.temp
-      adminUpdateInformById({ informId, title, content }).then(res => {
-        this.toggleDialog()
+      userUpdateInformById({ informId, title, content }).then(res => {
+        this.dialogFormVisible = false
         this.$notify({
           title: '修改成功',
           message: res.message,
           type: 'success',
           duration: 3000
         })
-        this._fetchData()
       }).catch(() => { })
     },
     handleUpdate(row) {
-      this.toggleDialog()
+      this.dialogFormVisible = true
       this.temp = row
     },
     handleDelete({ informId }) {
-      adminDeleteInformById(informId).then(res => {
+      userDeleteInformById(informId).then(res => {
         this.$message({
           message: res.message,
           type: 'success'
         })
-        this._fetchData()
       }).catch(() => { })
-    },
-    toggleDialog() {
-      this.dialogFormVisible = !this.dialogFormVisible
-    },
-    _fetchData() {
-      this.listLoading = true
-      fetchInformByUserId(this.user.id).then(res => {
-        this.list = res.data
-        this.listLoading = false
-      }).catch(() => {
-        this.listLoading = false
-      })
     }
   },
   filters: {

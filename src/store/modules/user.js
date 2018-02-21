@@ -49,9 +49,19 @@ const user = {
         })
       })
     },
+    // 前端登出
+    fedLogout({
+      commit
+    }) {
+      return new Promise((resolve, reject) => {
+        commit(types.SET_TOKEN, '')
+        removeToken()
+        resolve()
+      })
+    },
+    // 前后台同时登出
     logout({
-      commit,
-      state
+      commit
     }) {
       return new Promise((resolve, reject) => {
         logout().then(() => {

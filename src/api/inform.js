@@ -18,6 +18,7 @@ export function postInform(data) {
  */
 export function fetchInformById(id) {
   return request.get(`/inform/id/${id}`)
+  // return request.get(`http://localhost:3000/actMock/inform/id/${id}`)
 }
 /**
  * 分页获取通知
@@ -25,7 +26,8 @@ export function fetchInformById(id) {
  * @return {Promise}
  */
 export function fetchInformByPage(page) {
-  return request.get(`https://www.easy-mock.com/mock/5a7bfd3ea7b3ff4311b6778f/dev/inform/page`)
+  return request.get(`/inform/page/${page}`)
+  // return request.get(`http://localhost:3000/actMock/inform/page/${page}`)
 }
 /**
  * 获取用户已发通知
@@ -41,4 +43,50 @@ export function fetchUserInform() {
  */
 export function fetchInformByUserId(userId) {
   return request.get(`/inform/user/${userId}`)
+}
+
+/**
+ * 管理员删除通知
+ * @param {Number} informId
+ */
+export function adminDeleteInformById(informId) {
+  return request({
+    url: `/inform/admin?informId=${informId}`,
+    method: 'DELETE'
+  })
+}
+/**
+ * 管理员修改通知
+ * @param {JSON} data
+ * @param {Number} data.informId
+ * @param {String} data.title
+ * @param {String} data.content
+ */
+export function adminUpdateInformById(data) {
+  return request({
+    url: '/inform/admin',
+    method: 'PUT',
+    data
+  })
+}
+/**
+ * 用户删除通知
+ * @param {Number} informId
+ */
+export function userDeleteInformById(informId) {
+  return request({
+    url: `/inform?informId=${informId}`,
+    method: 'DELETE'
+  })
+}
+/**
+ * 用户修改通知
+ * @param {JSON} data
+ */
+export function userUpdateInformById(data) {
+  return request({
+    url: '/inform',
+    method: 'PUT',
+    data
+  })
 }

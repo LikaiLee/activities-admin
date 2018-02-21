@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="inform-cont">
-      <inform :data="informs" />
+      <inform />
     </div>
     <div class="login-cont">
       <el-card class="box-card">
@@ -18,7 +18,7 @@
           </el-form-item>
           <el-form-item>
             <el-button :loading="loading" @click.native.prevent="handleLogin" class="btn-submit" type="primary">登录
-              <i class="el-icon-fa-chevron-circle-right el-icon--right"></i>
+              <i class="el-icon-fa-sign-in el-icon--right"></i>
             </el-button>
           </el-form-item>
         </el-form>
@@ -30,12 +30,15 @@
 <script>
 import { mapActions } from 'vuex'
 import Inform from './inform'
-import { fetchInformByPage } from '@/api/inform'
 export default {
   name: 'login',
   data() {
     const validateUsername = (rule, value, callback) => {
-      callback()
+      if (value === '') {
+        callback(new Error('请输入用户名'))
+      } else {
+        callback()
+      }
     }
     const validatePass = (rule, value, callback) => {
       if (value.length < 1) {
@@ -53,14 +56,8 @@ export default {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
-      loading: false,
-      informs: []
+      loading: false
     }
-  },
-  mounted() {
-    fetchInformByPage(0).then((res) => {
-      this.informs = res.data
-    })
   },
   methods: {
     handleLogin() {

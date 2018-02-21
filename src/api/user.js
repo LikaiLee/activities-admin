@@ -30,6 +30,7 @@ export function validteToken() {
  * @return {Promise}
  */
 export function fetchRoutes() {
+  // return request.get('/menu')
   return request.post('https://www.easy-mock.com/mock/5a7bfd3ea7b3ff4311b6778f/dev/menu')
 }
 

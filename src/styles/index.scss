@@ -65,7 +65,7 @@ a:hover {
 }
 
 //main-container全局样式
-.app-main{
+.app-main {
   min-height: 100%
 }
 
@@ -79,4 +79,13 @@ a:hover {
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+}
+
+.link-type,
+.link-type:focus {
+  color: #337ab7;
+  cursor: pointer;
+  &:hover {
+    color: rgb(32, 160, 255);
+  }
 }
