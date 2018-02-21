@@ -36,9 +36,11 @@
    padding: 12px 20px;
  }
 
- .el-table__header thead tr th .cell{
-  color: #1f2d3d;
+ .el-table__header thead tr th .cell {
+   color: #1f2d3d;
  }
- .el-table td, .el-table th {
+
+ .el-table td,
+ .el-table th {
    padding: 9px 0;
  }

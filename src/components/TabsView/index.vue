@@ -1,7 +1,7 @@
 <template>
   <div class='tabs-view-container'>
     <router-link class="tabs-view" v-for="tag in visitedViews" :to="tag.path" :key="tag.path">
-      <el-tag :closable="true" :type="isActive(tag.path)?'':'info'" @close='closeViewTabs(tag, $event)'>
+      <el-tag :closable="true" :type="isActive(tag.path)?'':'info'" @close='closeViewTabs(tag, $event)' size="medium">
         {{tag.name}}
       </el-tag>
     </router-link>
@@ -14,7 +14,7 @@ export default {
   name: 'TabsView',
   computed: {
     visitedViews() {
-      return this.visitedViews
+      return this.visitedViews.slice(-6)
     },
     ...mapGetters([
       'visitedViews'
@@ -63,6 +63,9 @@ export default {
 
 <style lang="scss" scoped>
 .tabs-view-container {
+  width: 62%;
+  height: 50px;
+  overflow: hidden;
   display: inline-block;
   vertical-align: top;
   margin-left: 10px;

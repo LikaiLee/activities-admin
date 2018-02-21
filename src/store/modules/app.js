@@ -19,10 +19,10 @@ const app = {
     },
     [types.ADD_VISITED_VIEWS](state, view) {
       if (state.visitedViews.some(v => v.path === view.path)) return
-      state.visitedViews.push({
+      state.visitedViews = [{
         name: view.name,
         path: view.path
-      })
+      }, ...state.visitedViews]
     },
     [types.DEL_VISITED_VIEWS](state, view) {
       const newViews = state.visitedViews.filter(v => v.path !== view.path)

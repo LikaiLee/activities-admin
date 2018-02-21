@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { fetchInformByPage } from '@/api/inform'
+import { fetchInformByPage } from '@/api/admin'
 const perPageNum = 6
 export default {
   name: 'inform',

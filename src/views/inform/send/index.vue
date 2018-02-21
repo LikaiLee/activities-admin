@@ -41,8 +41,7 @@ export default {
     }
   },
   mounted() {
-    this.editor = new Editor('#editor')
-    this.editor.create()
+    this._initEditor()
   },
   methods: {
     resetForm() {
@@ -70,6 +69,12 @@ export default {
           this.loading = false
         })
       })
+    },
+    _initEditor() {
+      this.editor = new Editor('#editor')
+      this.editor.customConfig.zIndex = 100
+      this.editor.customConfig.pasteFilterStyle = false
+      this.editor.create()
     }
   }
 }
