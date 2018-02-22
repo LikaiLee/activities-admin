@@ -1,37 +1,34 @@
 import request from '@/utils/fetch'
 
 /**
- * 通过userId获取通知
- * @param {Number} userId
- * @return {Promise}
- */
-export function fetchInformByUserId(userId) {
-  return request.get(`/inform/user/${userId}`)
-}
-/**
- * 分页获取通知
- * @param {Number} page
- * @param {Number} size
- * @return {Promise}
- */
-export function fetchInformByPage(page, size = 6) {
-  return request({
-    url: `/inform/page/${page}`,
-    method: 'GET',
-    params: {
-      size
-    }
-  })
-  // return request.get(`http://localhost:3000/actMock/inform/page/${page}`)
-}
-/**
  * 管理员删除通知
  * @param {Number} informId
  */
 export function deleteInformById(informId) {
   return request({
-    url: `/inform/admin?informId=${informId}`,
-    method: 'DELETE'
+    url: `/inform/admin`,
+    method: 'DELETE',
+    params: {
+      informId
+    }
+  })
+}
+/**
+ * 管理员通过userId获取通知
+ * @param {Number} userId
+ * @param {Number} page
+ * @param {Number} [size = 10]
+ * @return {Promise}
+ */
+export function fetchInformByUserId(userId, page, size = 10) {
+  return request({
+    url: '/inform/admin',
+    method: 'GET',
+    params: {
+      userId,
+      page,
+      size
+    }
   })
 }
 /**
@@ -46,5 +43,21 @@ export function updateInform(data) {
     url: '/inform/admin',
     method: 'PUT',
     data
+  })
+}
+/**
+ * 分页获取通知
+ * @param {Number} page
+ * @param {Number} [size = 6]
+ * @return {Promise}
+ */
+export function fetchInformByPage(page, size = 6) {
+  return request({
+    url: `/inform/page`,
+    method: 'GET',
+    params: {
+      page,
+      size
+    }
   })
 }

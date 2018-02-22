@@ -42,6 +42,12 @@ export default {
   },
   mounted() {
     this._initEditor()
+    /* for (let i = 0; i < 14; i++) {
+      postInform({
+        title: 'title' + i,
+        content: 'content' + i
+      })
+    } */
   },
   methods: {
     resetForm() {

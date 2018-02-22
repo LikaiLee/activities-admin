@@ -9,7 +9,7 @@
           <el-button @click="nextPage" ref="nextBtn" :disabled="nextBtnDisabled" plain icon="el-icon-arrow-right" size="mini"></el-button>
         </el-button-group>
       </div>
-      <el-table v-loading.body="loading" element-loading-text="给我一点时间" :data="informs" :show-header="showHeader" border fit highlight-current-row height="300">
+      <el-table :data="informs" v-loading.body="loading" element-loading-text="给我一点时间" :show-header="showHeader" border fit highlight-current-row height="300">
         <el-table-column label="标题">
           <template slot-scope="scope">
             <el-popover trigger="hover" placement="right">
@@ -46,6 +46,7 @@ export default {
       loading: true,
       showHeader: true,
       informPage: 0,
+      isLastPage: false,
       prevBtnDisabled: true,
       nextBtnDisabled: false
     }
@@ -66,7 +67,9 @@ export default {
     _fetchInform() {
       this.loading = true
       fetchInformByPage(this.informPage).then((res) => {
-        this.informs = res.data
+        this.informs = res.data.sort((a, b) => {
+          return a.informId - b.informId
+        })
         this.loading = false
       }).catch(() => {
         this.loading = false
@@ -81,17 +84,15 @@ export default {
   watch: {
     informPage(newPage) {
       this._fetchInform()
-      if (newPage === 0) {
-        this.prevBtnDisabled = true
-      } else {
-        this.prevBtnDisabled = false
-      }
+      this.prevBtnDisabled = newPage === 0
     },
-    informs(newData) {
-      if (!newData.length || newData.length < perPageNum) {
-        this.nextBtnDisabled = true
+    informs({ length }, old) {
+      this.nextBtnDisabled = (!length || length < perPageNum || this.isLastPage)
+      if (!length && old.length) {
+        this.prevPage()
+        this.isLastPage = true
       } else {
-        this.nextBtnDisabled = false
+        this.isLastPage = false
       }
     }
   }

@@ -1,30 +1,51 @@
 <template>
-  <el-menu class="navbar" mode="horizontal">
-    <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-    <breadcrumb />
-    <tabs-view></tabs-view>
-    <screenfull class='screenfull'></screenfull>
-    <el-dropdown class="avatar-container" trigger="click">
-      <div class="avatar-wrapper">
-        <div class="username">
-          {{ user.realName }}
+  <div>
+    <el-menu class="navbar" mode="horizontal">
+      <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
+      <breadcrumb />
+      <tabs-view></tabs-view>
+      <screenfull class='screenfull'></screenfull>
+      <el-dropdown class="avatar-container" trigger="click">
+        <div class="avatar-wrapper">
+          <div class="username">
+            {{ user.realName }}
+          </div>
+          <i class="el-icon-caret-bottom"></i>
         </div>
-        <i class="el-icon-caret-bottom"></i>
-      </div>
-      <el-dropdown-menu class="user-dropdown" slot="dropdown">
-        <router-link class='inlineBlock' to="/">
-          <el-dropdown-item>
-            首页
-          </el-dropdown-item>
-        </router-link>
-        <div @click.prevent="logOut">
-          <el-dropdown-item divided>
-            退出登录
-          </el-dropdown-item>
-        </div>
-      </el-dropdown-menu>
-    </el-dropdown>
-  </el-menu>
+        <el-dropdown-menu class="user-dropdown" slot="dropdown">
+          <router-link class='inlineBlock' to="/">
+            <el-dropdown-item style="text-align: center;">
+              首页
+            </el-dropdown-item>
+          </router-link>
+          <div @click.prevent="visible = true">
+            <el-dropdown-item divided>
+              修改密码
+            </el-dropdown-item>
+          </div>
+          <div @click.prevent="logOut">
+            <el-dropdown-item divided>
+              退出登录
+            </el-dropdown-item>
+          </div>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </el-menu>
+    <el-dialog title="修改密码" :visible.sync="visible" width="35%">
+      <el-form label-position="right" label-width="70px">
+        <el-form-item label="密码" prop="pass">
+          <el-input type="password"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="checkPass">
+          <el-input type="password"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="visible = false">取 消</el-button>
+        <el-button type="primary" @click="visible = false">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -43,6 +64,7 @@ export default {
   },
   data() {
     return {
+      visible: false
     }
   },
   computed: {

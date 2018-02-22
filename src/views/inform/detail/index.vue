@@ -5,9 +5,7 @@
       <p>来源：{{data.author}} 发布时间：{{data.date}}</p>
       <hr>
       <div v-html="data.content" />
-      <a href="/">
-        <el-button icon="el-icon-fa-home" size="mini"></el-button>
-      </a>
+      <el-button @click="back" icon="el-icon-fa-home" size="mini"></el-button>
     </div>
     <div v-else>
       无数据
@@ -29,6 +27,9 @@ export default {
     this._fetchData()
   },
   methods: {
+    back() {
+      this.$router.go(-1)
+    },
     _fetchData() {
       this.id = this.$route.params.id
       fetchInformById(this.id).then(res => {

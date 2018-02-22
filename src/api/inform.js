@@ -10,32 +10,17 @@ import request from '@/utils/fetch'
 export function postInform(data) {
   return request.post('/inform', data)
 }
-
-/**
- * 通过id获取通知
- * @param {Number} id
- * @return {Promise}
- */
-export function fetchInformById(id) {
-  return request.get(`/inform/id/${id}`)
-  // return request.get(`http://localhost:3000/actMock/inform/id/${id}`)
-}
-/**
- * 获取当前用户已发通知
- * @return {Promise}
- */
-export function fetchUserInform() {
-  return request.get('/inform/user')
-}
-
 /**
  * 用户删除通知
  * @param {Number} informId
  */
 export function deleteInformById(informId) {
   return request({
-    url: `/inform?informId=${informId}`,
-    method: 'DELETE'
+    url: `/inform`,
+    method: 'DELETE',
+    params: {
+      informId
+    }
   })
 }
 /**
@@ -50,5 +35,31 @@ export function updateInform(data) {
     url: '/inform',
     method: 'PUT',
     data
+  })
+}
+/**
+ * 通过id获取通知
+ * @param {Number} id
+ * @return {Promise}
+ */
+export function fetchInformById(id) {
+  return request.get(`/inform/id`, {
+    params: {
+      id
+    }
+  })
+}
+/**
+ * 分页获取当前用户已发通知
+ * @param {Number} page
+ * @param {Number} [size = 6]
+ * @return {Promise}
+ */
+export function fetchUserInformByPage(page, size = 6) {
+  return request.get('/inform/user', {
+    params: {
+      page,
+      size
+    }
   })
 }

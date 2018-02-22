@@ -37,7 +37,9 @@ service.interceptors.response.use(
     const debug = process.env.NODE_ENV !== 'production'
     if (debug) {
       const url = response.request.responseURL.split('//')[1]
-      console.log(url.substr(url.indexOf('/')), response.data)
+      const urlFix = url.substr(url.indexOf('/'))
+      const method = response.request.custom.method
+      console.log(`${method} ${urlFix}`, response.data)
     }
 
     const {
