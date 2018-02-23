@@ -1,6 +1,6 @@
 <template>
   <div class="inform-dialog">
-    <el-dialog title="修改通知" :visible.sync="visible" width="60%">
+    <el-dialog title="修改通知" :visible.sync="dialogVisible" width="60%">
       <el-form class="small-space" :model="data" label-position="left" label-width="70px">
         <el-form-item label="标题">
           <el-input v-model="data.title"></el-input>
@@ -37,25 +37,30 @@ export default {
   },
   data() {
     return {
-      editor: null
+      editor: null,
+      dialogVisible: this.visible
     }
   },
   mounted() {
-    if (!this.editor) {
-      this.$nextTick(() => {
-        this._initEditor()
-        this.editor.txt.html(this.data.content)
-      })
-    } else {
-      this.editor.txt.html(this.data.content)
-    }
   },
   methods: {
     emitConfirm() {
-      this.$emit('confirm')
+      const { informId, title } = this.data
+      const content = this.editor.txt.html()
+      this.$emit('confirm', { informId, title, content })
     },
     emitCancel() {
       this.$emit('cancel')
+    },
+    _fillEditor() {
+      if (!this.editor) {
+        this.$nextTick(() => {
+          this._initEditor()
+          this.editor.txt.html(this.data.content)
+        })
+      } else {
+        this.editor.txt.html(this.data.content)
+      }
     },
     _initEditor() {
       this.editor = new Editor('#editor')
@@ -65,8 +70,9 @@ export default {
     }
   },
   watch: {
-    /* visible(see) {
-      if (see && !this.editor) {
+    visible(see) {
+      this.dialogVisible = see
+      if (!this.editor && see) {
         this.$nextTick(() => {
           this._initEditor()
           this.editor.txt.html(this.data.content)
@@ -74,8 +80,10 @@ export default {
       } else {
         this.editor.txt.html(this.data.content)
       }
-    } */
+    },
+    dialogVisible(visible) {
+      this.$emit('visibleChange', visible)
+    }
   }
 }
 </script>
-

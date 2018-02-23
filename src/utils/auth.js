@@ -1,4 +1,6 @@
-const TOKEN_KEY = 'TOKEN_ACTIVITIES'
+import {
+  TOKEN_KEY
+} from '@/config'
 export const getToken = () => {
   return localStorage.getItem(TOKEN_KEY)
 }

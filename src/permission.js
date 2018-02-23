@@ -5,14 +5,16 @@ import 'nprogress/nprogress.css'
 import {
   getToken
 } from '@/utils/auth'
-
-const whiteList = ['/login', '/404', '/noredirect', '/test'] // 不重定向地址
+import {
+  WHITE_LIST,
+  APP_NAME
+} from '@/config'
 router.beforeEach((to, from, next) => {
   NProgress.start()
   // 未登录 全部重定向至登录界面
   if (!getToken()) {
     // 避免死循环
-    if (whiteList.indexOf(to.path) !== -1 || to.path.indexOf('/inform/detail') !== -1) {
+    if (WHITE_LIST.indexOf(to.path) !== -1 || to.path.indexOf('/inform/detail') !== -1) {
       next()
     } else {
       next('/login')
@@ -41,8 +43,8 @@ router.beforeEach((to, from, next) => {
         next()
       }
     }
-    const title = to.name ? to.name + ' - ' : ''
-    document.title = title + '学生课外活动管理系统'
+    const title = to.name ? `${to.name} - ` : ''
+    document.title = `${title}${APP_NAME}`
   }
 
   NProgress.done()

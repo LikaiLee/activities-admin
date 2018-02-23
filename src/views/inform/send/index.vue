@@ -1,5 +1,5 @@
 <template>
-  <div class="inform-send">
+  <div class="inform-send-container">
     <el-form :model="informForm" :rules="informRules" ref="informForm">
       <el-form-item prop="title">
         <el-input placeholder="请输入标题" v-model="informForm.title">
@@ -85,10 +85,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.inform-send {
-  padding: 5px 20px;
-}
-</style>
-

@@ -8,6 +8,11 @@ import store from '@/store'
 import {
   getToken
 } from '@/utils/auth'
+import {
+  AUTH_NAME,
+  STATUS_OK,
+  STATUS_INVALID_TOKEN
+} from '@/config'
 
 // 创建axios实例
 const service = axios.create({
@@ -18,7 +23,7 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(config => {
   if (store.getters.token) {
-    config.headers['Authorization'] = getToken()
+    config.headers[AUTH_NAME] = getToken()
   }
   if (config.method === 'post' ||
     config.method === 'delete' ||
@@ -38,7 +43,7 @@ service.interceptors.response.use(
     if (debug) {
       const url = response.request.responseURL.split('//')[1]
       const urlFix = url.substr(url.indexOf('/'))
-      const method = response.request.custom.method
+      const method = response.config.method
       console.log(`${method} ${urlFix}`, response.data)
     }
 
@@ -46,14 +51,13 @@ service.interceptors.response.use(
       status,
       message
     } = response.data
-    if (status !== 200) {
+    if (status !== STATUS_OK) {
       Message({
         message: message || '操作失败!',
         type: 'error',
         duration: 3 * 1000
       })
-      // token 失效
-      if (status === 401) {
+      if (status === STATUS_INVALID_TOKEN) {
         MessageBox.confirm('登录凭据到期，已退出登录', '提示', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
@@ -70,7 +74,6 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.error('err' + error) // for debug
     Message({
       message: error.message,
       type: 'error',

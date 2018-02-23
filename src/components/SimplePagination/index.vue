@@ -37,11 +37,18 @@ export default {
     emitPrevPage() {
       this.curPage = Math.max(0, --this.curPage)
       this.$emit('prevPage', this.curPage)
-      this.$emit('pageChanged', this.curPage)
+      this.emitPageChanged()
     },
     emitNextPage() {
       this.curPage++
-      this.$emit('pageChanged', this.curPage)
+      this.$emit('nextPage', this.curPage)
+      this.emitPageChanged()
+    },
+    emitPageChanged() {
+      const fromIndex = this.curPage * this.pageSize + 1
+      this.$emit('pageChanged', {
+        page: this.curPage, fromIndex
+      })
     }
   },
   watch: {
