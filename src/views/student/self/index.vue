@@ -38,13 +38,18 @@ export default {
         const email = this.user.email
         if (!isEmail(email)) {
           this.emailError = '不是有效的邮箱格式!'
-          return
+          return false
+        } else {
+          this.emailError = ''
+          this.isEdit = false
+          updateBaseInfo({ email }).then(res => {
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            })
+            this.getUserInfo()
+          }).catch(_ => _)
         }
-        this.emailError = ''
-        this.isEdit = false
-        updateBaseInfo({ email }).then(res => {
-          this.getUserInfo()
-        }).catch(_ => _)
       } else {
         this.isEdit = true
       }
