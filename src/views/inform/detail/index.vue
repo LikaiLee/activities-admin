@@ -23,23 +23,27 @@ export default {
       data: null
     }
   },
-  created() {
+  mounted() {
     this._fetchData()
   },
   methods: {
     back() {
-      this.$router.go(-1)
+      this.$router.push('/')
     },
     _fetchData() {
       this.id = this.$route.params.id
       fetchInformById(this.id).then(res => {
         this.data = res.data
+      }).catch(err => {
+        console.error(err)
       })
     }
   },
   watch: {
-    $route() {
-      this._fetchData()
+    '$route'(route) {
+      if (route.params.id) {
+        this._fetchData()
+      }
     }
   }
 }

@@ -3,7 +3,7 @@ import generateRoutes from '@/utils/generateRoutes'
 import defaultRoutes from '@/router/defaultRoutes'
 import {
   fetchRoutes
-} from '@/api/user'
+} from '@/api/menu'
 
 const permission = {
   state: {

@@ -11,7 +11,7 @@
 import InformTable from '@/components/Inform/InformTable'
 import InformDialog from '@/components/Inform/InformDialog'
 import SimplePagination from '@/components/SimplePagination'
-import { fetchInformByPage, deleteInformById, updateInform } from '@/api/admin'
+import { fetchInformByPage, deleteInformById, updateInform } from '@/api/inform/admin'
 export default {
   data() {
     return {
@@ -19,7 +19,7 @@ export default {
       loading: true,
       fromIndex: 1,
       curPage: 0,
-      pageSize: 6,
+      pageSize: 10,
       visible: false,
       temp: {
         title: '',

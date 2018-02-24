@@ -5,7 +5,7 @@
 </template>
 <script>
 import BaseListView from '@/components/BaseListView'
-import { getStuBaseInfo } from '@/api/stuBase'
+import { fetchStuBaseInfo } from '@/api/student'
 export default {
   data() {
     return {
@@ -17,12 +17,13 @@ export default {
         { key: 'entrance_time', name: '入学时间' },
         { key: 'className', name: '班级' },
         { key: 'dormitory', name: '寝室' },
+        { key: 'political', name: '政治面貌' },
         { key: 'photo', name: '照片' }
       ]
     }
   },
   created() {
-    getStuBaseInfo().then((res) => {
+    fetchStuBaseInfo().then((res) => {
       this.stuBaseInfo = res.data
     }).catch(_ => _)
   },

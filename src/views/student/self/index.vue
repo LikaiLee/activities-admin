@@ -9,7 +9,7 @@
         {{user.sex}}
       </el-form-item>
       <el-form-item label="邮箱：">
-        <el-input v-if="isEdit" v-model="user.email" auto-complete="email" width="100px"></el-input>
+        <el-input @keyup.enter.native="handleEdit" v-if="isEdit" v-model="user.email" auto-complete="email" width="100px"></el-input>
         <div v-else>{{ user.email }}</div>
         <div style="color: #f30;">{{ emailError }}</div>
         <el-button @click="handleEdit" :type="isEdit ? 'success' : 'primary'" size="small" icon="el-icon-fa-edit" class="btn-edit">
@@ -23,7 +23,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { isEmail } from '@/utils/validator'
-import { updateBaseInfo } from '@/api/user'
+import { updateBaseInfo } from '@/api/user/baseInfo'
 export default {
   name: 'AccountManage',
   data() {
@@ -49,7 +49,6 @@ export default {
         this.isEdit = true
       }
     },
-    _fetchData() { },
     ...mapActions([
       'getUserInfo'
     ])

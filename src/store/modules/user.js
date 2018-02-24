@@ -7,9 +7,11 @@ import {
 } from '@/utils/auth'
 import {
   login,
-  logout,
-  fetchUserInfo
-} from '@/api/user'
+  logout
+} from '@/api/token'
+import {
+  fetchBaseInfo
+} from '@/api/user/baseInfo'
 const user = {
   state: {
     user: null,
@@ -77,7 +79,7 @@ const user = {
       commit
     }) {
       return new Promise((resolve, reject) => {
-        fetchUserInfo().then((res) => {
+        fetchBaseInfo().then((res) => {
           commit(types.SET_USER, res.data)
           resolve()
         }).catch(err => {

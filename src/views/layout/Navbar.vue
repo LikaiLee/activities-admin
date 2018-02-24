@@ -31,20 +31,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </el-menu>
-    <el-dialog title="修改密码" :visible.sync="visible" width="35%">
-      <el-form label-position="right" label-width="70px">
-        <el-form-item label="密码" prop="pass">
-          <el-input type="password"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="checkPass">
-          <el-input type="password"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="visible = false">取 消</el-button>
-        <el-button type="primary" @click="visible = false">确 定</el-button>
-      </span>
-    </el-dialog>
+    <update-password @confirm="handleUpdate" @cancel="handleCancel" @visibleChange="handleVisibleChange" :visible="visible" />
   </div>
 </template>
 
@@ -54,13 +41,15 @@ import TabsView from '@/components/TabsView'
 import Hamburger from '@/components/Hamburger'
 import Breadcrumb from '@/components/Breadcrumb'
 import Screenfull from '@/components/Screenfull'
+import UpdatePassword from '@/components/Dialog/UpdatePassword'
 
 export default {
   components: {
     Breadcrumb,
     TabsView,
     Hamburger,
-    Screenfull
+    Screenfull,
+    UpdatePassword
   },
   data() {
     return {
@@ -74,6 +63,15 @@ export default {
     ])
   },
   methods: {
+    handleUpdate() {
+      this.visible = false
+    },
+    handleCancel() {
+      this.visible = false
+    },
+    handleVisibleChange(visible) {
+      this.visible = visible
+    },
     logOut() {
       this.logout().then(() => {
         setTimeout(() => { window.location.reload() }, 100)// 为了重新实例化vue-router对象 避免bug

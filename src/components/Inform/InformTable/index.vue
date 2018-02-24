@@ -6,7 +6,7 @@
       </el-table-column>
       <el-table-column width="180px" align="center" label="时间">
         <template slot-scope="scope">
-          <span>{{scope.row.date | dateFormatter}}</span>
+          <span>{{scope.row.modified | dateFormatter}}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="300px" label="标题">

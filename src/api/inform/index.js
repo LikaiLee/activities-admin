@@ -43,7 +43,7 @@ export function updateInform(data) {
  * @return {Promise}
  */
 export function fetchInformById(id) {
-  return request.get(`/inform/id`, {
+  return request.get('/inform/id', {
     params: {
       id
     }
