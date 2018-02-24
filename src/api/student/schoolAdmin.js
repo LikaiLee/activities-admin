@@ -15,7 +15,7 @@ export function fetchStudentByPage(page, size = 10) {
 }
 /**
  * 校级管理员获取学生信息
- * @param {Number} stuId
+ * @param {String} stuId
  * @return {Promise}
  */
 export function fetchStudentByStuId(stuId) {
@@ -29,7 +29,7 @@ export function fetchStudentByStuId(stuId) {
 /**
  * 校级管理员修改学生信息
  * @param {JSON} data
- * @param {Number} data.stuId
+ * @param {String} data.stuId
  * @param {String} data.realName
  * @param {String} data.sex
  * @param {Number} data.classId

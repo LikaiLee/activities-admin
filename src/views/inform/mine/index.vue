@@ -90,9 +90,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.inform-manage-container {
-  .pagination {
-    margin: 20px 0 20px 46%;
-  }
-}
 </style>

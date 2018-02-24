@@ -31,7 +31,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </el-menu>
-    <update-password @confirm="handleUpdate" @cancel="handleCancel" @visibleChange="handleVisibleChange" :visible="visible" />
+    <update-password-dialog @confirm="handleUpdate" @cancel="handleCancel" @visibleChange="handleVisibleChange" :visible="visible" />
   </div>
 </template>
 
@@ -41,7 +41,7 @@ import TabsView from '@/components/TabsView'
 import Hamburger from '@/components/Hamburger'
 import Breadcrumb from '@/components/Breadcrumb'
 import Screenfull from '@/components/Screenfull'
-import UpdatePassword from '@/components/Dialog/UpdatePassword'
+import UpdatePasswordDialog from '@/components/Dialog/UpdatePasswordDialog'
 
 export default {
   components: {
@@ -49,7 +49,7 @@ export default {
     TabsView,
     Hamburger,
     Screenfull,
-    UpdatePassword
+    UpdatePasswordDialog
   },
   data() {
     return {

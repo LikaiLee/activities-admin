@@ -2,7 +2,7 @@
   <div class="simple-pagination">
     <el-button-group v-show="show">
       <el-button @click="emitPrevPage" :disabled="prevBtnDisabled" type="primary" plain icon="el-icon-arrow-left" size="small">上一页</el-button>
-      <el-button @click="emitNextPage" :disabled="nextBtnDisabled" type="primary" plain icon="el-icon-arrow-right" size="small">下一页</el-button>
+      <el-button @click="emitNextPage" :disabled="nextBtnDisabled" type="primary" plain size="small">下一页 <i class="el-icon-arrow-right"></i></el-button>
     </el-button-group>
   </div>
 </template>
@@ -72,5 +72,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.simple-pagination {
+    margin: 20px 0 20px 46%;
+  }
 </style>
