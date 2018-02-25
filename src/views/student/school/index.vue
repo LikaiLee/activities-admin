@@ -8,7 +8,7 @@
 
     <student-table @update="showUpdateDialog" :data="list" :loading="loading" :fromIndex="fromIndex" />
     <simple-pagination @pageChanged="handlePageChanged" :show="!loading" :data="list" :pageSize="pageSize" />
-    <update-stu-info-dialog :user="temp" @confirm="handleUpdate" @cancel="toggleDialog" @visibleChange="handleVisibleChange" :visible="visible" />
+    <update-stu-info-dialog type="school" :user="temp" @confirm="handleUpdate" @cancel="toggleDialog" @visibleChange="handleVisibleChange" :visible="visible" />
   </div>
 </template>
 
@@ -55,7 +55,7 @@ export default {
       this.toggleDialog()
       updateStudent({
         stuId, realName, sex, photo, entranceTime, political,
-        classId: -1,
+        classId: 1,
         dormitoryId: -1
       }).then((res) => {
         this.$message({
