@@ -1,14 +1,11 @@
 <template>
   <div>
-    student.vue {{ stuId }}
+    major.vue {{ stuId }}
   </div>
 </template>
 
 <script>
-// import { fetchActivity } from '@/api/student'
-import { fetchActivity } from '@/api/student/classAdmin'
-// import { fetchActivity } from '@/api/student/majorAdmin'
-// import { fetchActivity } from '@/api/student/schoolAdmin'
+import { fetchActivity } from '@/api/student/majorAdmin'
 export default {
   data() {
     return {

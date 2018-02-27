@@ -9,15 +9,15 @@ export function fetchStuBaseInfo() {
 
 /**
  * 用户获取活动
- * @param {JSON} data
- * @param {String} term
- * @param {Number} page
- * @param {Number} [size]
+ * @param {JSON} params
+ * @param {String} params.term
+ * @param {Number} params.page
+ * @param {Number} [params.size]
  */
-export function fetchActivity(data) {
+export function fetchActivity(params) {
   return request({
     url: '/stu/activity',
     method: 'GET',
-    data
+    params
   })
 }

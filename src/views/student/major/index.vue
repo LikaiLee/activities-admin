@@ -6,7 +6,7 @@
       <el-button @click="handleFilter" class="filter-item" type="primary" icon="el-icon-fa-search">搜索</el-button>
     </div>
 
-    <student-table @update="showUpdateDialog" :data="list" :loading="loading" :fromIndex="fromIndex" />
+    <student-table type="major" @update="showUpdateDialog" :data="list" :loading="loading" :fromIndex="fromIndex" />
     <simple-pagination @pageChanged="handlePageChanged" :show="!loading" :data="list" :pageSize="pageSize" />
     <update-stu-info-dialog type="major" :user="temp" @confirm="handleUpdate" @cancel="toggleDialog" @visibleChange="handleVisibleChange" :visible="visible" />
   </div>

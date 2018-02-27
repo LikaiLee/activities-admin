@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'StudentTable',
   props: {
@@ -39,15 +40,32 @@ export default {
     fromIndex: {
       type: Number,
       default: 1
+    },
+    type: {
+      type: String,
+      default: ''
     }
   },
   methods: {
     handleNameClick(stuId) {
-      this.$router.push(`/student/${stuId}`)
+      const adminType = this.type
+      const hasPermission = this.permissionRoutes.some(route => `/student/${adminType}` === route.path)
+      if (!hasPermission) {
+        this.addAdminRoleRoutes(adminType)
+      }
+      this.$router.push(`/student/${adminType}/${stuId}`)
     },
     emitUpdate(row) {
       this.$emit('update', row)
-    }
+    },
+    ...mapActions([
+      'addAdminRoleRoutes'
+    ])
+  },
+  computed: {
+    ...mapGetters([
+      'permissionRoutes'
+    ])
   }
 }
 </script>

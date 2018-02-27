@@ -49,16 +49,17 @@ export function updateStudent(data) {
 
 /**
  * 校级管理员获取活动
- * @param {JSON} data
- * @param {String} stuId
- * @param {String} term
- * @param {Number} page
- * @param {Number} [size]
+ * @param {JSON} params
+ * @param {String} params.stuId
+ * @param {String} params.term
+ * @param {Number} params.page
+ * @param {Number} [params.size]
  */
-export function fetchActivity(data) {
+export function fetchActivity(params) {
+  console.log(params)
   return request({
     url: '/stu/activity/school',
     method: 'GET',
-    data
+    params
   })
 }
