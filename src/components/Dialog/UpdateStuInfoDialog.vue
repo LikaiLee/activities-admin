@@ -68,7 +68,9 @@ export default {
           realName: '',
           sex: '',
           stuId: '',
-          userId: -1
+          userId: -1,
+          classId: -1,
+          dormitoryId: -1
         }
       }
     },

@@ -4,13 +4,21 @@
       <div v-for="item in labels" :key="item.key">
         <el-row :gutter="20">
           <el-col :span="6" :style="itemNameStyle" class="item-name">
-            {{item.name}}：
+            {{item.name}}
           </el-col>
           <el-col :span="12">
             {{data[item.key]}}
           </el-col>
         </el-row>
       </div>
+      <el-row :gutter="20">
+        <el-col :span="6" :style="itemNameStyle" class="item-name">
+          <slot name="itemName"></slot>
+        </el-col>
+        <el-col :span="12">
+          <slot name="itemContent"></slot>
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>

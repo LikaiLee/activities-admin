@@ -56,3 +56,19 @@ export function updateStudent(data) {
     data
   })
 }
+
+/**
+ * 专业管理员获取活动
+ * @param {JSON} data
+ * @param {String} stuId
+ * @param {String} term
+ * @param {Number} page
+ * @param {Number} [size]
+ */
+export function fetchActivity(data) {
+  return request({
+    url: '/stu/activity/major',
+    method: 'GET',
+    data
+  })
+}

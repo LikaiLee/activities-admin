@@ -35,7 +35,8 @@ export default {
         realName: '',
         sex: '',
         stuId: '',
-        userId: -1
+        userId: -1,
+        dormitoryId: -1
       },
       filterStuId: ''
     }
@@ -51,11 +52,11 @@ export default {
         this._fetchData()
       }
     },
-    handleUpdate({ stuId, political }) {
+    handleUpdate({ stuId, dormitoryId, political }) {
       this.toggleDialog()
       updateStudent({
         stuId, political,
-        dormitoryId: -1
+        dormitoryId
       }).then((res) => {
         this.$message({
           message: res.message,

@@ -5,7 +5,7 @@
       <el-table-column prop="stuId" label="学号" align="center" width="100px" />
       <el-table-column label="姓名" align="center" width="100px">
         <template slot-scope="scope">
-          <span class="link-type" @click="emitUpdate(scope.row)">{{scope.row.realName}}</span>
+          <span class="link-type" @click="handleNameClick(scope.row.stuId)">{{scope.row.realName}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="sex" label="性别" align="center" width="60px" />
@@ -42,6 +42,9 @@ export default {
     }
   },
   methods: {
+    handleNameClick(stuId) {
+      this.$router.push(`/student/${stuId}`)
+    },
     emitUpdate(row) {
       this.$emit('update', row)
     }

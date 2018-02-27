@@ -19,11 +19,6 @@ export default [{
     component: _import('test/index')
   },
   {
-    path: '/inform/detail/:id',
-    hidden: true,
-    component: _import('inform/detail/index')
-  },
-  {
     path: '/',
     redirect: '/home',
     component: Layout,
@@ -33,6 +28,21 @@ export default [{
       path: 'home',
       name: '首页',
       component: _import('home/index')
+    }]
+  },
+  {
+    path: '/inform/detail/:id',
+    hidden: true,
+    component: _import('inform/detail/index')
+  },
+  {
+    path: '/student',
+    hidden: true,
+    component: Layout,
+    children: [{
+      path: ':stuId',
+      name: '学生详细信息',
+      component: _import('student/student')
     }]
   }
 ]
