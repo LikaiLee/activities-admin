@@ -2,7 +2,7 @@
   <div class="inform-table">
     <el-table :data="data" v-loading="loading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
       <el-table-column type="index" :index="fromIndex" align="center" />
-      <el-table-column prop="informId" align="center" label="ID" width="65" />
+      <!-- <el-table-column prop="informId" align="center" label="ID" width="65" /> -->
       </el-table-column>
       <el-table-column width="180px" align="center" label="时间">
         <template slot-scope="scope">

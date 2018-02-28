@@ -6,7 +6,10 @@
           <el-col :span="6" :style="itemNameStyle" class="item-name">
             {{item.name}}
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" v-if="item.key === 'photo'">
+            <img :src="data[item.key] || 'http://placehold.it/30&text=avatar'" width="30" height="30">
+          </el-col>
+          <el-col :span="12" v-else>
             {{data[item.key]}}
           </el-col>
         </el-row>

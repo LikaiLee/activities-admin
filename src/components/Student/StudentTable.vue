@@ -13,7 +13,11 @@
       <el-table-column prop="className" label="班级" align="center" />
       <el-table-column prop="political" label="政治面貌" align="center" />
       <el-table-column prop="dormitory" label="寝室" align="center" />
-      <el-table-column prop="photo" label="照片" align="center" />
+      <el-table-column label="照片" align="center">
+        <template slot-scope="scope">
+          <img :src="scope.row.photo || 'http://placehold.it/30&text=avatar'" width="30" height="30">
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
           <el-button type="primary" @click="emitUpdate(scope.row)" size="mini">修改
@@ -51,7 +55,7 @@ export default {
     handleNameClick(user) {
       const adminType = this.type
       // const hasPermission = this.permissionRoutes.some(route => `/student/${adminType}` === route.path)
-      const hasPermission = getRole()
+      const hasPermission = getRole() === adminType
       if (!hasPermission) {
         setRole(adminType)
         this.addAdminRoleRoutes(adminType)

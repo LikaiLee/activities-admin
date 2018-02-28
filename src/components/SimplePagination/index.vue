@@ -2,7 +2,9 @@
   <div class="simple-pagination">
     <el-button-group v-show="show">
       <el-button @click="emitPrevPage" :disabled="prevBtnDisabled" type="primary" plain icon="el-icon-arrow-left" size="small">上一页</el-button>
-      <el-button @click="emitNextPage" :disabled="nextBtnDisabled" type="primary" plain size="small">下一页 <i class="el-icon-arrow-right"></i></el-button>
+      <el-button @click="emitNextPage" :disabled="nextBtnDisabled" type="primary" plain size="small">下一页
+        <i class="el-icon-arrow-right"></i>
+      </el-button>
     </el-button-group>
   </div>
 </template>
@@ -23,11 +25,19 @@ export default {
       type: Number,
       required: true,
       default: 0
+    },
+    dataType: {
+      type: String,
+      default: ''
+    },
+    fromPage: {
+      type: Number,
+      default: 0
     }
   },
   data() {
     return {
-      curPage: 0,
+      curPage: this.fromPage,
       isLastPage: false,
       prevBtnDisabled: true,
       nextBtnDisabled: false
@@ -47,13 +57,18 @@ export default {
     emitPageChanged() {
       const fromIndex = this.curPage * this.pageSize + 1
       this.$emit('pageChanged', {
-        page: this.curPage, fromIndex
+        page: this.curPage,
+        fromIndex,
+        dataType: this.dataType
       })
     }
   },
   watch: {
     curPage(newPage) {
       this.prevBtnDisabled = newPage === 0
+    },
+    fromPage(page) {
+      this.curPage = page
     },
     data(newData, oldData) {
       const length = newData.length
@@ -73,6 +88,6 @@ export default {
 
 <style lang="scss" scoped>
 .simple-pagination {
-    margin: 20px 0 20px 46%;
-  }
+  margin: 20px 0 20px 46%;
+}
 </style>
