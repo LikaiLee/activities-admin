@@ -5,7 +5,7 @@
       <el-table-column prop="stuId" label="学号" align="center" width="100px" />
       <el-table-column label="姓名" align="center" width="100px">
         <template slot-scope="scope">
-          <span class="link-type" @click="handleNameClick(scope.row.stuId)">{{scope.row.realName}}</span>
+          <span class="link-type" @click="handleNameClick(scope.row)">{{scope.row.realName}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="sex" label="性别" align="center" width="60px" />
@@ -26,6 +26,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { getRole, setRole } from '@/utils/role'
 export default {
   name: 'StudentTable',
   props: {
@@ -47,13 +48,15 @@ export default {
     }
   },
   methods: {
-    handleNameClick(stuId) {
+    handleNameClick(user) {
       const adminType = this.type
-      const hasPermission = this.permissionRoutes.some(route => `/student/${adminType}` === route.path)
+      // const hasPermission = this.permissionRoutes.some(route => `/student/${adminType}` === route.path)
+      const hasPermission = getRole()
       if (!hasPermission) {
+        setRole(adminType)
         this.addAdminRoleRoutes(adminType)
       }
-      this.$router.push(`/student/${adminType}/${stuId}`)
+      this.$router.push(`/student/${adminType}/${user.stuId}`)
     },
     emitUpdate(row) {
       this.$emit('update', row)

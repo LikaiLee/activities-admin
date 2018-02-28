@@ -1,12 +1,22 @@
 <template>
   <div class="user-account">
-    <div class="filter-container">
-      <el-input v-model.trim="filterStuId" @change="handleFilter" placeholder="学号" suffix-icon="el-icon-edit" style="width: 200px;" class="filter-item">
-      </el-input>
-      <el-button @click="handleFilter" class="filter-item" type="primary" icon="el-icon-fa-search">搜索</el-button>
-    </div>
-
-    <student-table @update="showUpdateDialog" :data="list" :loading="loading" :fromIndex="fromIndex" />
+    <el-table :data="list" v-loading="loading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 70%">
+      <el-table-column type="index" :index="fromIndex" align="center" />
+      <!-- <el-table-column prop="id" label="ID" align="center" width="100px" /> -->
+      <el-table-column label="姓名" align="center" width="100px">
+        <template slot-scope="scope">
+          <span class="link-type" @click="showUpdateDialog(scope.row)">{{scope.row.realName}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="sex" label="性别" align="center" width="60px" />
+      <el-table-column prop="email" label="邮箱" align="center" />
+      <el-table-column align="center" label="操作">
+        <template slot-scope="scope">
+          <el-button type="primary" @click="showUpdateDialog(scope.row)" size="mini">修改密码
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
     <simple-pagination @pageChanged="handlePageChanged" :show="!loading" :data="list" :pageSize="pageSize" class="pagination" />
     <update-password-dialog @confirm="handleUpdate" @cancel="toggleDialog" @visibleChange="handleVisibleChange" :visible="visible" />
 
@@ -16,8 +26,7 @@
 import StudentTable from '@/components/Student/StudentTable'
 import UpdatePasswordDialog from '@/components/Dialog/UpdatePasswordDialog'
 import SimplePagination from '@/components/SimplePagination'
-import { fetchStudentByPage, fetchStudentByStuId } from '@/api/student/schoolAdmin'
-import { updatePassword } from '@/api/user/admin'
+import { fetchBaseInfoByPage, updatePassword } from '@/api/user/admin'
 export default {
   data() {
     return {
@@ -28,9 +37,8 @@ export default {
       loading: true,
       visible: false,
       temp: {
-        userId: -1
-      },
-      filterStuId: ''
+        id: -1
+      }
     }
   },
   created() {
@@ -42,16 +50,9 @@ export default {
       this.curPage = page
       this._fetchData()
     },
-    handleFilter() {
-      if (this.filterStuId) {
-        this._filterData()
-      } else {
-        this._fetchData()
-      }
-    },
     handleUpdate(password) {
       this.toggleDialog()
-      updatePassword({ userId: this.temp.userId, password }).then((res) => {
+      updatePassword({ userId: this.temp.id, password }).then((res) => {
         this.$message({
           message: res.message,
           type: 'success'
@@ -59,8 +60,8 @@ export default {
       }).catch(_ => _)
     },
     showUpdateDialog(data) {
-      this.toggleDialog()
       this.temp = data
+      this.toggleDialog()
     },
     handleVisibleChange(visible) {
       this.visible = visible
@@ -68,18 +69,9 @@ export default {
     toggleDialog() {
       this.visible = !this.visible
     },
-    _filterData() {
-      this.loading = true
-      fetchStudentByStuId(this.filterStuId).then((res) => {
-        this.loading = false
-        this.list = [res.data]
-      }).catch(() => {
-        this.loading = false
-      })
-    },
     _fetchData() {
       this.loading = true
-      fetchStudentByPage(this.curPage, this.pageSize).then((res) => {
+      fetchBaseInfoByPage(this.curPage, this.pageSize).then((res) => {
         this.list = res.data
         this.loading = false
       }).catch(() => {

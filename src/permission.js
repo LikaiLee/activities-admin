@@ -11,6 +11,9 @@ import {
 import {
   pathInWhiteList
 } from '@/utils'
+import {
+  getRole
+} from '@/utils/role'
 router.beforeEach((to, from, next) => {
   NProgress.start()
   // 未登录 全部重定向至登录界面
@@ -30,6 +33,10 @@ router.beforeEach((to, from, next) => {
         // 构建可访问的路由表
         store.dispatch('generateRoutes').then(() => {
           router.addRoutes(store.getters.newRoutes) // 动态添加新增路由
+          const role = getRole()
+          if (role) {
+            store.dispatch('addAdminRoleRoutes', role)
+          }
           // 获取用户信息
           store.dispatch('getUserInfo').then(() => {
             next({ ...to
@@ -37,9 +44,9 @@ router.beforeEach((to, from, next) => {
           })
         }).catch((err) => {
           console.error(err)
-          store.dispatch('logout').then(() => {
+          /* store.dispatch('logout').then(() => {
             next('/login')
-          })
+          }) */
         })
       } else {
         next()

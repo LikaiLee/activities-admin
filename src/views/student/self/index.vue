@@ -42,7 +42,6 @@ export default {
   mounted() {
     fetchStuBaseInfo().then(res => {
       this.userBaseInfo = Object.assign({}, this.user, res.data)
-      console.log(this.userBaseInfo)
     }).catch(_ => _)
   },
   methods: {
