@@ -15,6 +15,18 @@
       </el-table-column>
     </el-table>
 
+    <div class="term-container">
+      <el-select @change="filterByTerm" v-model="year" placeholder="请选择" style="width: 100px;">
+        <el-option v-for="(year, key) in allYears" :label="year" :value="year" :key="key">{{ year }}</el-option>
+      </el-select>
+      <span class="desc"> 学年，第</span>
+      <el-select @change="filterByTerm" v-model="semester" placeholder="请选择" style="width: 70px;">
+        <el-option value="1">1</el-option>
+        <el-option value="2">2</el-option>
+      </el-select>
+      <span class="desc"> 学期 </span>
+    </div>
+
     <el-tabs v-loading="loading" value="activity" @tab-click="handleTabClick" type="card" class="score-container">
       <el-tab-pane label="活动" name="activity">
         <activity-table :data="curList" :fromIndex="fromIndex" />
@@ -57,21 +69,15 @@ import {
   fetchPractice, fetchReserve, fetchSkill, fetchVolunteer
 } from '@/api/student/schoolAdmin'
 
-const scoreTypes = {
-  ACTIVITY: 'activity',
-  HONOR: 'honor',
-  OFFICE: 'office',
-  PRACTICE: 'practice',
-  RESERVE: 'reserve',
-  SKILL: 'skill',
-  VOLUNTEER: 'volunteer'
-}
+import { scoreTypes } from '@/config'
 
 export default {
   data() {
     return {
       stuId: -1,
-      term: this._currentTerm(),
+      fromYear: 2015,
+      year: this.getCurYear(),
+      semester: this.getCurSemester(),
       student: null,
       curPage: 0,
       pageSize: 3,
@@ -89,6 +95,9 @@ export default {
     this._fetchActivity()
   },
   methods: {
+    filterByTerm() {
+      this.fetchDataByType(this.pageDataType)
+    },
     handlePageChanged({ page, fromIndex, dataType }) {
       this.fromIndex = fromIndex
       this.curPage = page
@@ -210,18 +219,28 @@ export default {
         this.loading = false
       })
     },
-    _currentTerm() {
-      const date = new Date()
-      const year = date.getFullYear()
-      const month = date.getMonth() + 1
+    getCurSemester() {
+      const month = new Date().getMonth() + 1
       if (month >= 3 && month <= 9) {
-        return `${year}02`
+        return 2
       } else {
-        return `${year}01`
+        return 1
       }
-    }
+    },
+    getCurYear: () => new Date().getFullYear()
   },
   computed: {
+    term() {
+      return `${this.year}0${this.semester}`
+    },
+    allYears() {
+      const gap = this.getCurYear() - this.fromYear
+      const years = []
+      for (let i = 0; i <= gap; i++) {
+        years.push(this.fromYear + i)
+      }
+      return years
+    }
   },
   components: {
     ActivityTable,
@@ -240,6 +259,12 @@ export default {
 .school-detail-container {
   .score-container {
     margin-top: 20px;
+  }
+  .term-container {
+    margin-top: 20px;
+    .desc {
+      margin: 0 10px;
+    }
   }
   .fade-enter-active,
   .fade-leave-active {

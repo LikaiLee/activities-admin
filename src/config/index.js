@@ -6,3 +6,12 @@ export const AUTH_NAME = 'Authorization'
 export const STATUS_OK = 200
 export const STATUS_INVALID_TOKEN = 401 // TOKEN 过期
 export const STATUS_UNAUTHORIZED = 402 // 未授权
+export const scoreTypes = {
+  ACTIVITY: 'activity',
+  HONOR: 'honor',
+  OFFICE: 'office',
+  PRACTICE: 'practice',
+  RESERVE: 'reserve',
+  SKILL: 'skill',
+  VOLUNTEER: 'volunteer'
+}

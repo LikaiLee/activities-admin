@@ -13,7 +13,7 @@
           <el-form-item prop="username">
             <el-input v-model="loginForm.username" autoComplete="on" placeholder="用户名" prefix-icon="el-icon-fa-user"></el-input>
           </el-form-item>
-          <el-form-item prop="username">
+          <el-form-item prop="password">
             <el-input v-model="loginForm.password" @keyup.enter.native="handleLogin" autoComplete="on" placeholder="密码" type="password" prefix-icon="el-icon-fa-eye"></el-input>
           </el-form-item>
           <el-form-item>
@@ -42,7 +42,7 @@ export default {
     }
     const validatePass = (rule, value, callback) => {
       if (value.length < 1) {
-        callback(new Error('密码不能小于1位'))
+        callback(new Error('密码不能小于4位'))
       } else {
         callback()
       }

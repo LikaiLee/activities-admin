@@ -52,7 +52,7 @@
       </el-tab-pane>
     </el-tabs>
     <simple-pagination @pageChanged="handlePageChanged" :fromPage="curPage" :dataType="pageDataType" :data="curList" :pageSize="pageSize" />
-
+    
   </div>
 </template>
 
