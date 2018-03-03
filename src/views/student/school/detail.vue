@@ -111,26 +111,27 @@ export default {
       this.fetchDataByType(type)
     },
     fetchDataByType(type) {
+      const { ACTIVITY, HONOR, OFFICE, PRACTICE, RESERVE, SKILL, VOLUNTEER } = scoreTypes
       switch (type) {
-        case scoreTypes.ACTIVITY:
+        case ACTIVITY:
           this._fetchActivity()
           break
-        case scoreTypes.HONOR:
+        case HONOR:
           this._fetchHonor()
           break
-        case scoreTypes.OFFICE:
+        case OFFICE:
           this._fetchOffice()
           break
-        case scoreTypes.PRACTICE:
+        case PRACTICE:
           this._fetchPractice()
           break
-        case scoreTypes.RESERVE:
+        case RESERVE:
           this._fetchReserve()
           break
-        case scoreTypes.SKILL:
+        case SKILL:
           this._fetchSkill()
           break
-        case scoreTypes.VOLUNTEER:
+        case VOLUNTEER:
           this._fetchVolunteer()
           break
       }

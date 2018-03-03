@@ -9,7 +9,7 @@
           <el-button @click="nextPage" ref="nextBtn" :disabled="nextBtnDisabled" plain icon="el-icon-arrow-right" size="mini"></el-button>
         </el-button-group>
       </div>
-      <el-table :data="informs" v-loading.body="loading" element-loading-text="给我一点时间" :show-header="showHeader" border fit highlight-current-row height="300">
+      <el-table :data="informs" v-loading.body="loading" element-loading-text="给我一点时间" :show-header="showHeader" border fit highlight-current-row>
         <el-table-column label="标题">
           <template slot-scope="scope">
             <el-popover trigger="hover" placement="right">
@@ -37,7 +37,7 @@
 
 <script>
 import { fetchInformByPage } from '@/api/inform/admin'
-const perPageNum = 6
+const pageSize = 6
 export default {
   name: 'inform',
   data() {
@@ -66,7 +66,7 @@ export default {
     },
     _fetchInform() {
       this.loading = true
-      fetchInformByPage(this.informPage).then((res) => {
+      fetchInformByPage(this.informPage, pageSize).then((res) => {
         this.informs = res.data.sort((a, b) => {
           return a.informId - b.informId
         })
@@ -87,7 +87,7 @@ export default {
       this.prevBtnDisabled = newPage === 0
     },
     informs({ length }, old) {
-      this.nextBtnDisabled = (!length || length < perPageNum || this.isLastPage)
+      this.nextBtnDisabled = (!length || length < pageSize || this.isLastPage)
       if (!length && old.length) {
         this.prevPage()
         this.isLastPage = true
@@ -101,7 +101,6 @@ export default {
 <style lang="scss" scoped>
 .inform {
   width: 650px;
-  height: 300px;
 
   &-card {
     width: 100%;
