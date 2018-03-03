@@ -18,10 +18,17 @@
           <el-input v-model="user.entrance_time"></el-input>
         </el-form-item>
         <el-form-item label="班级" prop="className">
-          <el-input v-model="user.className"></el-input>
+          {{ user.className }}
+        </el-form-item>
+        <el-form-item label="修改班级">
+          <el-cascader :options="classOpts" v-model="selectedclass" @change="handleClassChange" @active-item-change="fetchNewOpts" />
         </el-form-item>
         <el-form-item label="政治面貌" prop="political">
-          <el-input v-model="user.political"></el-input>
+          <el-select v-model="user.political">
+            <el-option value="群众"></el-option>
+            <el-option value="共青团员"></el-option>
+            <el-option value="党员"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="寝室" prop="dormitory">
           <el-input v-model="user.dormitory"></el-input>
@@ -32,12 +39,20 @@
       </div>
       <div v-else-if="type === 'class'">
         <el-form-item label="政治面貌" prop="political">
-          <el-input v-model="user.political"></el-input>
+          <el-select v-model="user.political">
+            <el-option value="群众"></el-option>
+            <el-option value="共青团员"></el-option>
+            <el-option value="党员"></el-option>
+          </el-select>
         </el-form-item>
       </div>
       <div v-else-if="type === 'major'">
         <el-form-item label="政治面貌" prop="political">
-          <el-input v-model="user.political"></el-input>
+          <el-select v-model="user.political">
+            <el-option value="群众"></el-option>
+            <el-option value="共青团员"></el-option>
+            <el-option value="党员"></el-option>
+          </el-select>
         </el-form-item>
       </div>
     </el-form>
@@ -49,6 +64,7 @@
 </template>
 
 <script>
+import { fetchClassByMajor, fetchMajorByYear, fetchAllYear } from '@/api/class'
 export default {
   name: 'UpdateStuInfoDialog',
   props: {
@@ -86,21 +102,85 @@ export default {
         stuId: [
           { required: true }
         ]
-      }
+      },
+      classOpts: [],
+      selectedclass: []
     }
   },
+  mounted() {
+    this._fetchAllYear()
+  },
   methods: {
+    fetchNewOpts(classArr) {
+      const len = classArr.length
+      if (len === 1) {
+        const year = classArr[0]
+        const majors = this.classOpts.find(_ => year === _.value).children
+        fetchMajorByYear(year).then(res => {
+          res.data.forEach(({ id, majorName }) => {
+            if (majors.some(_ => id === _.value)) return
+            majors.push({
+              value: id,
+              label: majorName,
+              children: []
+            })
+          })
+        })
+      } else if (len === 2) {
+        const [year, majorId] = classArr
+        const cls = this.classOpts
+          .find(_ => year === _.value).children
+          .find(_ => majorId === _.value).children
+        fetchClassByMajor(majorId).then((res) => {
+          res.data.forEach(({ id, classNum }) => {
+            if (cls.some(_ => id === _.value)) return
+            cls.push({
+              value: id,
+              label: `${classNum}班`
+            })
+          })
+        })
+      }
+    },
+    handleClassChange(value) {
+      const classId = this.selectedclass[this.selectedclass.length - 1]
+      this.user.classId = classId
+    },
+    _fetchAllYear() {
+      fetchAllYear().then(res => {
+        res.data.forEach((year) => {
+          if (this.classOpts.some(_ => year === _.value)) return
+          this.classOpts.push({
+            value: year,
+            label: `${year}级`,
+            children: []
+          })
+        })
+      })
+    },
     emitCancel() {
       this.$emit('cancel')
       this.dialogVisible = false
+      this.resetClsOpts()
     },
     emitConfirm() {
       this.$emit('confirm', this.user)
+      this.resetClsOpts()
+    },
+    resetClsOpts() {
+      // this.classOpts = []
+      this.selectedclass = []
     }
   },
   watch: {
-    visible(newVal) {
-      this.dialogVisible = newVal
+    visible(visible) {
+      this.dialogVisible = visible
+      /* if (visible && !this.classOpts.length) {
+        this._fetchAllYear()
+      } */
+      if (!visible) {
+        this.resetClsOpts()
+      }
     },
     dialogVisible(visible) {
       this.$emit('visibleChange', visible)

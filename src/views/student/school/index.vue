@@ -56,7 +56,8 @@ export default {
     handleUpdate({ stuId, classId, dormitoryId, realName, sex, photo, entrance_time: entranceTime, political }) {
       this.toggleDialog()
       updateStudent({
-        stuId, realName, sex, photo, entranceTime, political,
+        stuId, realName, sex, photo,
+        entranceTime, political,
         classId,
         dormitoryId
       }).then((res) => {

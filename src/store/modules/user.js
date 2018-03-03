@@ -33,14 +33,14 @@ const user = {
       password
     }) {
       return new Promise((resolve, reject) => {
-        password = md5(password).toUpperCase()
+        const md5password = md5(password).toUpperCase()
         const timestamp = new Date().getTime()
         const nonce = Math.round(2147483647 * Math.random()) * timestamp % 1e10
         login({
           timestamp,
           nonce,
           username,
-          password
+          password: md5password
         }).then((res) => {
           const token = res.data
           commit(types.SET_TOKEN, token)
