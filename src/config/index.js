@@ -15,3 +15,4 @@ export const scoreTypes = {
   SKILL: 'skill',
   VOLUNTEER: 'volunteer'
 }
+export const stuExcelTplFields = ['学号', '姓名', '性别', '邮箱', '政治面貌', '入学时间', '班级id', '寝室id']

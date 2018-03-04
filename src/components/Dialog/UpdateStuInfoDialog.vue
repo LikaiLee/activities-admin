@@ -164,6 +164,7 @@ export default {
       this.resetClsOpts()
     },
     emitConfirm() {
+      console.log(this.user)
       this.$emit('confirm', this.user)
       this.resetClsOpts()
     },

@@ -2,7 +2,7 @@
   <div>
     <el-button :loading="loading" icon="el-icon-fa-file-excel-o" type="primary" @click="handleUpload">选择文件</el-button>
     <slot></slot>
-    <input @change="handkeFileChange" class="excel-upload-input" type="file" accept=".xlsx, .xls" ref="uploadInput">
+    <input @change="handleFileChange" class="excel-upload-input" type="file" accept=".xlsx, .xls" ref="uploadInput">
   </div>
 </template>
 
@@ -25,11 +25,12 @@ export default {
       this.excelData.results = results
       this.loading = false
       this.$emit('on-selected-file', file, this.excelData)
+      this.$refs.uploadInput.value = ''
     },
     handleUpload() {
       this.$refs.uploadInput.click()
     },
-    handkeFileChange(e) {
+    handleFileChange(e) {
       this.loading = true
       const files = e.target.files
       const itemFile = files[0] // only use files[0]
@@ -41,7 +42,12 @@ export default {
         const firstSheetName = workbook.SheetNames[0]
         const worksheet = workbook.Sheets[firstSheetName]
         const header = this.get_header_row(worksheet)
-        const results = XLSX.utils.sheet_to_json(worksheet)
+        const results = XLSX.utils.sheet_to_json(worksheet, {
+          raw: true,
+          range: 1,
+          defval: '',
+          header: ['stuId', 'stuName', 'gender', 'email', 'political', 'entranceTime', 'classId', 'dormitoryId']
+        })
         this.generateDate({ header, results }, itemFile)
       }
       reader.readAsArrayBuffer(itemFile)
@@ -60,10 +66,12 @@ export default {
       let C
       const R = range.s.r /* start in the first row */
       for (C = range.s.c; C <= range.e.c; ++C) { /* walk every column in the range */
-        var cell = sheet[XLSX.utils.encode_cell({ c: C, r: R })] /* find the cell in the first row */
-        var hdr = 'UNKNOWN ' + C // <-- replace with your desired default
-        if (cell && cell.t) hdr = XLSX.utils.format_cell(cell)
-        headers.push(hdr)
+        const cell = sheet[XLSX.utils.encode_cell({ c: C, r: R })] /* find the cell in the first row */
+        let hdr = 'UNKNOWN ' + C // <-- replace with your desired default
+        if (cell && cell.t) {
+          hdr = XLSX.utils.format_cell(cell)
+          headers.push(hdr)
+        }
       }
       return headers
     }
