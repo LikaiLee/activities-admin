@@ -3,7 +3,7 @@
     <upload-excel :header="header" @on-selected-file='handleSelected'>
       <el-button @click="handleUpload" icon="el-icon-fa-cloud-upload" type="primary">上传</el-button>
       <el-button @click="handleDownload" icon="el-icon-fa-cloud-download" type="primary">下载模板</el-button>
-      <a href="http://120.25.240.194:8080/stu/db/base/file" ref="anchor" style="display: none;"></a>
+      <a href="http://120.25.240.194:8080/stu/db/office/file" ref="anchor" style="display: none;"></a>
     </upload-excel>
     <div v-show="errStudents.length" class="error-student">
       <div @click="handleFilter(stuId)" v-for="stuId in errStudents" :key="stuId" class="stu-tag">
@@ -15,12 +15,11 @@
       <!-- <el-table-column type="index" :index="1" align="center" /> -->
       <el-table-column prop="stuId" label="学号" align="center" />
       <el-table-column prop="stuName" label="姓名" align="center" />
-      <el-table-column prop="gender" label="性别" align="center" />
-      <el-table-column prop="email" label="邮箱" align="center" />
-      <el-table-column prop="political" label="政治面貌" align="center" />
-      <el-table-column prop="entranceTime" label="入学时间" align="center" />
-      <el-table-column prop="classId" label="班级id" align="center" />
-      <el-table-column prop="dormitoryId" label="寝室id" align="center" />
+      <el-table-column prop="officeLv" label="岗级" align="center" />
+      <el-table-column prop="officeName" label="岗位" align="center" />
+      <el-table-column prop="startDate" label="开始时间" align="center" />
+      <el-table-column prop="endDate" label="结束时间" align="center" />
+      <el-table-column prop="common" label="备注" align="center" />
     </el-table>
     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 30, 50, 100]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length" prev-text="上一页" next-text="下一页" />
     <el-dialog :title="dialogMsg" :visible.sync="dialogVisible" width="35%">
@@ -42,12 +41,12 @@
 
 <script>
 import uploadExcel from '@/components/UploadStuFile'
-import { uploadStuFile } from '@/api/db'
-import { stuExcelTplFields } from '@/config'
+import { uploadOfficeFile } from '@/api/db'
+import { stuOfficeTplFields } from '@/config'
 export default {
   data() {
     return {
-      header: ['stuId', 'stuName', 'gender', 'email', 'political', 'entranceTime', 'classId', 'dormitoryId'],
+      header: ['stuId', 'stuName', 'officeLv', 'officeName', 'startDate', 'endDate', 'common'],
       file: null,
       list: [],
       pageSize: 10,
@@ -104,7 +103,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        uploadStuFile(this.file).then(({ data, message }) => {
+        uploadOfficeFile(this.file).then(({ data, message }) => {
           if (data.length) {
             this.dialogVisible = true
             this.dialogMsg = message
@@ -130,8 +129,8 @@ export default {
       this.tableHeader = data.header
       this.errStudents = []
       // console.log(this.file)
-      // console.log(this.tableHeader)
-      // console.log(this.tableData)
+      console.log(this.tableHeader)
+      console.log(this.tableData)
     },
     validateTableData() {
       const errStudents = this.errStudents
@@ -139,7 +138,7 @@ export default {
       tableData.forEach((student, index) => {
         Object.keys(student).forEach((key) => {
           const value = student[key]
-          if (key !== 'email' && key !== 'classId' && key !== 'dormitoryId') {
+          if (key !== 'common') {
             if (this.isEmpty(value)) {
               const stuId = `${student.stuId}`
               if (errStudents.indexOf(stuId) === -1) {
@@ -154,7 +153,7 @@ export default {
       let flag = true
       const tableHeader = this.tableHeader
       for (let i = 0; i < tableHeader.length; i++) {
-        if (tableHeader[i] !== stuExcelTplFields[i]) {
+        if (tableHeader[i] !== stuOfficeTplFields[i]) {
           flag = false
           return flag
         }

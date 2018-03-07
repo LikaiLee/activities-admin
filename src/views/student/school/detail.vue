@@ -40,14 +40,14 @@
       <el-tab-pane label="实践" name="practice">
         <practice-table :data="curList" :fromIndex="fromIndex" />
       </el-tab-pane>
-      <el-tab-pane label="加分" name="reserve">
-        <reserve-table :data="curList" :fromIndex="fromIndex" />
-      </el-tab-pane>
       <el-tab-pane label="技能" name="skill">
         <skill-table :data="curList" :fromIndex="fromIndex" />
       </el-tab-pane>
       <el-tab-pane label="志愿" name="volunteer">
         <volunteer-table :data="curList" :fromIndex="fromIndex" />
+      </el-tab-pane>
+      <el-tab-pane label="其他" name="reserve">
+        <reserve-table :data="curList" :fromIndex="fromIndex" />
       </el-tab-pane>
     </el-tabs>
     <simple-pagination @pageChanged="handlePageChanged" :fromPage="curPage" :dataType="pageDataType" :data="curList" :pageSize="pageSize" />

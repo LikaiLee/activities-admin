@@ -10,6 +10,13 @@
 import XLSX from 'xlsx'
 
 export default {
+  props: {
+    header: {
+      type: Array,
+      required: true,
+      default() { return [] }
+    }
+  },
   data() {
     return {
       loading: false,
@@ -43,10 +50,10 @@ export default {
         const worksheet = workbook.Sheets[firstSheetName]
         const header = this.get_header_row(worksheet)
         const results = XLSX.utils.sheet_to_json(worksheet, {
-          raw: true,
+          // raw: true,
           range: 1,
           defval: '',
-          header: ['stuId', 'stuName', 'gender', 'email', 'political', 'entranceTime', 'classId', 'dormitoryId']
+          header: this.header
         })
         this.generateDate({ header, results }, itemFile)
       }

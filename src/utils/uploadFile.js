@@ -26,6 +26,14 @@ export default (url, opts) => {
         status,
         message
       } = response.data
+      const debug = process.env.NODE_ENV !== 'production'
+      if (debug) {
+        console.log(response.data)
+        /* const url = response.request.responseURL.split('//')[1]
+        const urlFix = url.substr(url.indexOf('/'))
+        const method = response.config.method
+        console.log(`${method} ${urlFix}`, response.data) */
+      }
       if (status !== STATUS_OK) {
         Message({
           message: message || '操作失败!',
