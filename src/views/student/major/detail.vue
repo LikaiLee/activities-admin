@@ -227,7 +227,10 @@ export default {
         return 1
       }
     },
-    getCurYear: () => new Date().getFullYear()
+    getCurYear() {
+      const year = new Date().getFullYear()
+      return this.getCurSemester() === 2 ? year - 1 : year
+    }
   },
   computed: {
     term() {
