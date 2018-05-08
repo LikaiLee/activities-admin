@@ -3,7 +3,7 @@
     <upload-excel :header="header" @on-selected-file='handleSelected'>
       <el-button @click="handleUpload" icon="el-icon-fa-cloud-upload" type="primary">上传</el-button>
       <el-button @click="handleDownload" icon="el-icon-fa-cloud-download" type="primary">下载模板</el-button>
-      <a href="http://120.25.240.194:8080/stu/db/office/file" ref="anchor" style="display: none;"></a>
+      <a :href="downloadUrl" ref="anchor" style="display: none;"></a>
     </upload-excel>
     <div v-show="errStudents.length" class="error-student">
       <div @click="handleFilter(stuId)" v-for="stuId in errStudents" :key="stuId" class="stu-tag">
@@ -46,6 +46,7 @@ import { stuOfficeTplFields } from '@/config'
 export default {
   data() {
     return {
+      downloadUrl: `${process.env.BASE_URL}/stu/db/office/file`,
       header: ['stuId', 'stuName', 'officeLv', 'officeName', 'startDate', 'endDate', 'common'],
       file: null,
       list: [],

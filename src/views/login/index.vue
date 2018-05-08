@@ -49,7 +49,7 @@ export default {
     }
     return {
       loginForm: {
-        username: 'yxm',
+        username: '15905631',
         password: '1'
       },
       loginRules: {
