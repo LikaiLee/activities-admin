@@ -42,6 +42,7 @@ import Hamburger from '@/components/Hamburger'
 import Breadcrumb from '@/components/Breadcrumb'
 import Screenfull from '@/components/Screenfull'
 import UpdatePasswordDialog from '@/components/Dialog/UpdatePasswordDialog'
+import { updatePassword } from '@/api/user'
 
 export default {
   components: {
@@ -63,8 +64,14 @@ export default {
     ])
   },
   methods: {
-    handleUpdate() {
+    handleUpdate(password) {
       this.visible = false
+      updatePassword(password).then(res => {
+        this.$message({
+          message: res.message,
+          type: 'success'
+        })
+      })
     },
     handleCancel() {
       this.visible = false

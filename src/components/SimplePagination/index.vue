@@ -12,24 +12,29 @@
 export default {
   name: 'SimplePagination',
   props: {
+    // 是否显示分页
     show: {
       type: Boolean,
       default: true
     },
+    // 分页数据 必须
     data: {
       type: Array,
       required: true,
       default() { return [] }
     },
+    // 每页大小 必须
     pageSize: {
       type: Number,
       required: true,
       default: 0
     },
+    // 自定义类型
     dataType: {
       type: String,
       default: ''
     },
+    // 自定义当前页
     fromPage: {
       type: Number,
       default: 0

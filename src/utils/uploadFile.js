@@ -57,7 +57,6 @@ export default (url, opts) => {
       }
     }
   )
-
   return axios({
     headers: {
       [AUTH_NAME]: getToken(),

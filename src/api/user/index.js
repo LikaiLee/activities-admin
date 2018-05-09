@@ -1,3 +1,4 @@
+import md5 from 'md5'
 import request from '@/utils/fetch'
 
 /**
@@ -22,11 +23,12 @@ export function register(data) {
  * @param {String} password
  */
 export function updatePassword(password) {
+  const md5Password = md5(password).toUpperCase()
   return request({
     url: '/user',
     method: 'PUT',
     data: {
-      password
+      password: md5Password
     }
   })
 }
