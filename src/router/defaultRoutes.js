@@ -34,5 +34,15 @@ export default [{
     path: '/inform/detail/:id',
     hidden: true,
     component: _import('inform/detail/index')
+  },
+  {
+    path: '/club/apply/detail',
+    hidden: true,
+    component: Layout,
+    children: [{
+      path: ':applyId',
+      name: '申请详情',
+      component: _import('club/apply/detail')
+    }]
   }
 ]

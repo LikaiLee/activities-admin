@@ -6,9 +6,7 @@ import uploadFile from '@/utils/uploadFile'
  * @param {Number} id
  */
 export function fetchApprovalById(id) {
-  return request.get('/club/app', {
-    id
-  })
+  return request.get(`/club/app?id=${id}`)
 }
 
 /**

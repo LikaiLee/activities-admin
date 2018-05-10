@@ -4,46 +4,13 @@
       <el-tab-pane label="已提交申请">
         <el-tabs :value="curTabType" @tab-click="handleTabClick" tab-position="left">
           <el-tab-pane name="checking" label="审批中">
-            <el-table :data="curList" v-loading="loading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-              <el-table-column type="index" :index="fromIndex" align="center" />
-              <el-table-column prop="activityName" label="活动名" />
-              <el-table-column width="180px" align="center" label="申请日期">
-                <template slot-scope="scope">
-                  <span>{{scope.row.applyDate | dateFormatter}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column prop="chiefName" label="社长" />
-              <el-table-column prop="clubName" label="社团" />
-              <el-table-column prop="status" label="状态" />
-            </el-table>
+            <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
           </el-tab-pane>
           <el-tab-pane name="rejected" label="未通过">
-            <el-table :data="curList" v-loading="loading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-              <el-table-column type="index" :index="fromIndex" align="center" />
-              <el-table-column prop="activityName" label="活动名" />
-              <el-table-column width="180px" align="center" label="申请日期">
-                <template slot-scope="scope">
-                  <span>{{scope.row.applyDate | dateFormatter}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column prop="chiefName" label="社长" />
-              <el-table-column prop="clubName" label="社团" />
-              <el-table-column prop="status" label="状态" />
-            </el-table>
+            <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
           </el-tab-pane>
           <el-tab-pane name="passed" label="已通过">
-            <el-table :data="curList" v-loading="loading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-              <el-table-column type="index" :index="fromIndex" align="center" />
-              <el-table-column prop="activityName" label="活动名" />
-              <el-table-column width="180px" align="center" label="申请日期">
-                <template slot-scope="scope">
-                  <span>{{scope.row.applyDate | dateFormatter}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column prop="chiefName" label="社长" />
-              <el-table-column prop="clubName" label="社团" />
-              <el-table-column prop="status" label="状态" />
-            </el-table>
+            <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
           </el-tab-pane>
         </el-tabs>
         <simple-pagination @pageChanged="handlePageChanged" :show="!loading" :fromPage="curPage" :data="curList" :pageSize="pageSize" class="pagination" />
@@ -91,6 +58,7 @@
 
 <script>
 // 社长提交申请
+import ApplyTable from '@/components/ApplyTable'
 import SimplePagination from '@/components/SimplePagination'
 import { postApproval } from '@/api/club/app'
 import { fetchSelfStatus } from '@/api/club/appStatus'
@@ -110,7 +78,7 @@ export default {
       },
       curTabType: 'checking',
       curList: [],
-      loading: true,
+      loading: false,
       fromIndex: 1,
       curPage: 0,
       pageSize: 6
@@ -126,13 +94,11 @@ export default {
       this.curPage = 0
       this.fromIndex = 1
       this.getApply()
-      console.log(this.curPage)
     },
     // 分页切换
     handlePageChanged({ page, fromIndex }) {
       this.fromIndex = fromIndex
       this.curPage = page
-      console.log(this.curPage)
       this.getApply()
     },
     // 根据状态获取已提交申请
@@ -179,16 +145,9 @@ export default {
       this.$refs.form.resetFields()
     }
   },
-  filters: {
-    dateFormatter(date) {
-      return date
-        .replace(/年|月/g, '-')
-        .replace(/时|分/g, ':')
-        .replace(/日|秒\s*\w*\s*/g, '')
-    }
-  },
   components: {
-    SimplePagination
+    SimplePagination,
+    ApplyTable
   }
 }
 </script>

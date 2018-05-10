@@ -17,6 +17,24 @@ export function fetchAllStatus(page, size = 6) {
   })
 }
 /**
+ * 获取审批员可见得所有申请表
+ * @param {Number} status
+ * @param {Number} page
+ * @param {Number} [size = 6]
+ * @return {Promise}
+ */
+export function fetchStatusByType(status, page, size = 6) {
+  return request({
+    url: '/club/status/all',
+    method: 'GET',
+    params: {
+      status,
+      page,
+      size
+    }
+  })
+}
+/**
  * 获取需要用户审批申请
  * @param {Number} page
  * @param {Number} [size = 6]
