@@ -133,6 +133,11 @@ export default {
           message,
           type: status === 200 ? 'success' : 'error'
         })
+      }).catch(() => {
+        this.$message({
+          message: 'error',
+          type: 'error'
+        })
       })
     },
     handleFileChange(e) {

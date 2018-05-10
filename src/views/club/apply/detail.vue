@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-container class="container">
-      <el-aside width="35%" class="aside">
-        <el-collapse accordion>
+    <el-row :gutter="20" class="container">
+      <el-col :span="8" class="aside">
+        <el-collapse :accordion="false">
           <el-collapse-item v-for="(record, index) in checkData" :key="index">
             <template slot="title">
               <i :class="checkTitle(checkResults[record.level])" class="header-icon"></i>
@@ -20,74 +20,58 @@
               </div>
             </div>
             <div v-else>
-              <p class="suggestion">暂无审批记录</p>
+              <p class="indent">暂无审批记录</p>
             </div>
           </el-collapse-item>
-          <!-- <el-collapse-item>
-              <template slot="title">
-                <i :class="checkTitle(checkResults.lv3)" class="header-icon"></i>
-                场地审批
-              </template>
-              <div v-if="checkResults.lv3" class="check-result">
-                <p class="suggestion">{{ checkResults.lv3.comment }} </p>
-                <div class="result-box">
-                  <el-tag class="result" :type="checkTagType(checkResults.lv3.result)">
-                    {{ checkResults.lv3.result }}
-                  </el-tag>
-                  <span class="person">
-                    审核人： {{ checkResults.lv3.auditor }}
-                  </span>
-                </div>
-              </div>
-              <div v-else>
-                <p class="suggestion">暂无审批记录</p>
-              </div>
-            </el-collapse-item>
-            <el-collapse-item>
-              <template slot="title">
-                <i :class="checkTitle(checkResults.lv3)" class="header-icon"></i>
-                社联审批
-              </template>
-              <div v-if="checkResults.lv3" class="check-result">
-                <p class="suggestion">{{ checkResults.lv3.comment }} </p>
-                <div class="result-box">
-                  <el-tag class="result" :type="checkTagType(checkResults.lv3.result)">
-                    {{ checkResults.lv3.result }}
-                  </el-tag>
-                  <span class="person">
-                    审核人： {{ checkResults.lv3.auditor }}
-                  </span>
-                </div>
-              </div>
-              <div v-else>
-                <p class="suggestion">暂无审批记录</p>
-              </div>
-            </el-collapse-item>
-            <el-collapse-item>
-              <template slot="title">
-                <i :class="checkTitle(checkResults.lv4)" class="header-icon"></i>
-                团委审批
-              </template>
-              <div v-if="checkResults.lv4" class="check-result">
-                <p class="suggestion">{{ checkResults.lv4.comment }} </p>
-                <div class="result-box">
-                  <el-tag class="result" :type="checkTagType(checkResults.lv4.result)">
-                    {{ checkResults.lv4.result }}
-                  </el-tag>
-                  <span class="person">
-                    审核人： {{ checkResults.lv4.auditor }}
-                  </span>
-                </div>
-              </div>
-              <div v-else>
-                <p class="suggestion">暂无审批记录</p>
-              </div>
-            </el-collapse-item> -->
         </el-collapse>
-      </el-aside>
-      <el-main class="main-content">
-      </el-main>
-    </el-container>
+      </el-col>
+      <el-col v-if="applyData" v-loading="!applyData" :span="16" class="main-content">
+        <el-table :data="[applyData]" border fit highlight-current-row>
+          <el-table-column align="center" prop="activityName" label="活动名称" />
+          <el-table-column align="center" prop="activityPlace" label="活动地点" />
+          <el-table-column align="center" prop="activitypeople" label="参与对象及人数" />
+          <el-table-column align="center" label="活动时间">
+            <template slot-scope="scope">
+              <span>{{scope.row.activityStart | parseDate}} 至 {{scope.row.activityEnd | parseDate}}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-table :data="[applyData]" border fit highlight-current-row>
+          <el-table-column align="center" prop="clubName" label="申办社团" />
+          <el-table-column align="center" prop="chiefName" label="社长姓名" />
+          <el-table-column align="center" label="是否为优秀社团">
+            <template slot-scope="scope">
+              <span>{{scope.row.isFine === 0 ? '是' : '否'}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="申请日期">
+            <template slot-scope="scope">
+              <span>{{ scope.row.applyDate.split(' ')[0] }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-table :data="[applyData]" border fit highlight-current-row>
+          <el-table-column align="center" prop="selfMoney" label="自留经费" />
+          <el-table-column align="center" prop="reserveMoney" label="社联预留经费" />
+          <el-table-column align="center" prop="status" label="审核状态" />
+          <el-table-column align="center" label="是否有附件">
+            <template slot-scope="scope">
+              <div v-if="scope.row.hasFile === 1">
+                <a :href="downloadLink + scope.row.applicationId" ref="downloadAnchor" style="display: none;"></a>
+                <span class="link-type" @click="downloadFile">
+                  下载
+                </span>
+              </div>
+              <span v-else>否</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div style="margin-top: 20px;">
+          <b>活动简介：</b>
+          <p class="indent">{{ applyData.introduce }}</p>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -125,7 +109,8 @@ export default {
           title: '团委审批',
           level: 'lv4'
         }
-      ]
+      ],
+      downloadLink: `${process.env.BASE_URL}/club/app/file?id=`
     }
   },
   mounted() {
@@ -139,6 +124,9 @@ export default {
     })
   },
   methods: {
+    downloadFile() {
+      this.$refs.downloadAnchor.click()
+    },
     // 标题效果
     checkTitle(level) {
       if (level) {
@@ -155,25 +143,25 @@ export default {
     checkTagType: ({ result }) => result === '同意' ? 'success' : 'danger'
   },
   filters: {
-    parseDate: (timeStamp) => new Date(timeStamp).toLocaleDateString()
+    parseDate: (timeStamp) => new Date(+timeStamp).toLocaleDateString()
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .passed {
-  color: green;
+  color: #67c23a;
 }
 
 .rejected {
-  color: red;
+  color: #f56c6c;
 }
 
 .checking {
-  color: orange;
+  color: #e6a23c;
 }
 
-.suggestion {
+.indent {
   text-indent: 2em;
 }
 
@@ -196,7 +184,9 @@ export default {
     overflow: hidden;
   }
 
-  .main-content {}
+  .main-content {
+    height: 200px; // background: #e4e;
+  }
 }
 </style>
 
