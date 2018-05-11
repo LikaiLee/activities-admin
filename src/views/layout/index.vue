@@ -1,7 +1,7 @@
 <template>
   <div class="app-wrapper" :class="{hideSidebar: isCollapse}">
-    <sidebar :routes="routes" :isCollapse="isCollapse" class="sidebar-container"></sidebar>
-    <div class="main-container">
+    <sidebar v-if="user" :routes="routes" :isCollapse="isCollapse" class="sidebar-container"></sidebar>
+    <div :class="{'offset': user}" class="main-container">
       <navbar></navbar>
       <app-main></app-main>
     </div>
@@ -13,7 +13,7 @@ import { mapGetters } from 'vuex'
 import Navbar from './Navbar'
 import AppMain from './AppMain'
 import Sidebar from '@/components/Sidebar'
-
+// :class="{computedOffset}"
 export default {
   name: 'Layout',
   components: {
@@ -32,6 +32,7 @@ export default {
     },
     ...mapGetters([
       'sidebar',
+      'user',
       'permissionRoutes'
     ])
   }
@@ -40,6 +41,10 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "../../styles/mixin.scss";
+.offset {
+  margin-left: 180px;
+}
+
 .app-wrapper {
   @include clearfix;
   position: relative;
@@ -70,7 +75,7 @@ export default {
   .main-container {
     min-height: 100%;
     transition: margin-left 0.28s ease-out;
-    margin-left: 180px;
+    // margin-left: 180px;
   }
 }
 </style>

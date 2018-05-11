@@ -1,8 +1,8 @@
 import axios from 'axios'
 import qs from 'qs'
 import {
-  Message,
-  MessageBox
+  // MessageBox,
+  Message
 } from 'element-ui'
 import store from '@/store'
 import {
@@ -58,14 +58,13 @@ service.interceptors.response.use(
         duration: 3 * 1000
       })
       if (status === STATUS_INVALID_TOKEN) {
-        MessageBox.confirm('登录凭据到期，已退出登录', '提示', {
+        /* MessageBox.confirm('登录凭据到期，已退出登录', '提示', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
-          store.dispatch('fedLogout').then(() => {
-            location.reload()
-          })
+        }).then(() => {}) */
+        store.dispatch('fedLogout').then(() => {
+          location.reload()
         })
       }
       return Promise.reject('操作失败')

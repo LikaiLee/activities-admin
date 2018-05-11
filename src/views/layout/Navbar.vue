@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-menu class="navbar" mode="horizontal">
+    <el-menu v-if="user" class="navbar" mode="horizontal">
       <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
       <breadcrumb />
       <tabs-view></tabs-view>

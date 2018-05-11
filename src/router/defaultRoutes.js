@@ -3,6 +3,22 @@ const _import = require('./_import_' + process.env.NODE_ENV)
 
 /*eslint-disable*/
 
+export const getAdminRouter = (adminType, pathName) => {
+  return {
+    path: `/student/${adminType}`,
+    hidden: true,
+    component: Layout,
+    children: [{
+      path: ':stuId',
+      name: pathName,
+      meta: {
+        hideInTab: true // 不显示在Tab栏
+      },
+      component: _import(`student/${adminType}/detail`)
+    }]
+  }
+}
+
 export default [{
     path: '/login',
     hidden: true,
@@ -42,6 +58,9 @@ export default [{
     children: [{
       path: ':applyId',
       name: '申请详情',
+      meta: {
+        hideInTab: true // 不显示在Tab栏
+      },
       component: _import('club/apply/detail')
     }]
   }

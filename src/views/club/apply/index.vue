@@ -3,6 +3,9 @@
     <el-tabs type="card">
       <el-tab-pane label="已提交申请">
         <el-tabs :value="curTabType" @tab-click="handleTabClick" tab-position="left">
+          <el-tab-pane name="all" label="全部">
+            <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
+          </el-tab-pane>
           <el-tab-pane name="checking" label="审批中">
             <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
           </el-tab-pane>
@@ -61,7 +64,7 @@
 import ApplyTable from '@/components/ApplyTable'
 import SimplePagination from '@/components/SimplePagination'
 import { postApproval } from '@/api/club/app'
-import { fetchSelfStatus } from '@/api/club/appStatus'
+import { fetchSelfStatus, fetchSelfAllStatus } from '@/api/club/appStatus'
 export default {
   data() {
     return {
@@ -76,7 +79,7 @@ export default {
         introduce: '',
         file: null
       },
-      curTabType: 'checking',
+      curTabType: 'all',
       curList: [],
       loading: false,
       fromIndex: 1,
@@ -93,13 +96,23 @@ export default {
       this.curTabType = tab.name
       this.curPage = 0
       this.fromIndex = 1
-      this.getApply()
+      this.curTabType === 'all' ? this.getAll() : this.getApply()
     },
     // 分页切换
     handlePageChanged({ page, fromIndex }) {
       this.fromIndex = fromIndex
       this.curPage = page
-      this.getApply()
+      this.curTabType === 'all' ? this.getAll() : this.getApply()
+    },
+    // 获取所有
+    getAll() {
+      this.loading = true
+      fetchSelfAllStatus(this.curPage, this.pageSize).then(res => {
+        this.curList = res.data
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
     },
     // 根据状态获取已提交申请
     getApply() {

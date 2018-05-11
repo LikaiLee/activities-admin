@@ -1,5 +1,12 @@
 export const APP_NAME = '学生课外活动管理系统'
-export const WHITE_LIST = ['/login', '/404', '/noredirect', '/test', '/inform/detail/'] // 不重定向地址
+export const WHITE_LIST = [
+  '/login',
+  '/404',
+  '/noredirect',
+  '/test',
+  '/inform/detail/', // 通知详情
+  '/club/apply/detail' // 申请详情
+] // 不重定向地址
 
 export const TOKEN_KEY = 'TOKEN_ACTIVITIES'
 export const AUTH_NAME = 'Authorization'

@@ -9,63 +9,88 @@
               {{ record.title }}
             </template>
             <div v-if="checkResults[record.level]" class="check-result">
-              <p class="suggestion">{{ checkResults[record.level].comment }} </p>
-              <div class="result-box">
-                <el-tag class="result" :type="checkTagType(checkResults[record.level])">
-                  {{ checkResults[record.level].result }}
-                </el-tag>
-                <span class="person">
-                  审核人： {{ checkResults[record.level].auditor }}
-                </span>
+              <p class="indent">{{ checkResults[record.level].comment }} </p>
+              <div class="result-box" :class="checkTagType(checkResults[record.level])">
+                <div class="result">
+                  <b>{{ checkResults[record.level].result }}</b>
+                </div>
+                <div class="person">
+                  审核人：
+                  <b class="black">{{ checkResults[record.level].auditor }}</b>
+                </div>
               </div>
             </div>
             <div v-else>
-              <p class="indent">暂无审批记录</p>
+              <el-alert title="暂无审批记录" type="warning" :closable="false" />
             </div>
           </el-collapse-item>
         </el-collapse>
       </el-col>
       <el-col v-if="applyData" v-loading="!applyData" :span="16" class="main-content">
-        <el-table :data="[applyData]" border fit highlight-current-row>
-          <el-table-column align="center" prop="activityName" label="活动名称" />
-          <el-table-column align="center" prop="activityPlace" label="活动地点" />
-          <el-table-column align="center" prop="activitypeople" label="参与对象及人数" />
-          <el-table-column align="center" label="活动时间">
-            <template slot-scope="scope">
-              <span>{{scope.row.activityStart | parseDate}} 至 {{scope.row.activityEnd | parseDate}}</span>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-table :data="[applyData]" border fit highlight-current-row>
-          <el-table-column align="center" prop="clubName" label="申办社团" />
-          <el-table-column align="center" prop="chiefName" label="社长姓名" />
-          <el-table-column align="center" label="是否为优秀社团">
-            <template slot-scope="scope">
-              <span>{{scope.row.isFine === 0 ? '是' : '否'}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="申请日期">
-            <template slot-scope="scope">
-              <span>{{ scope.row.applyDate.split(' ')[0] }}</span>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-table :data="[applyData]" border fit highlight-current-row>
-          <el-table-column align="center" prop="selfMoney" label="自留经费" />
-          <el-table-column align="center" prop="reserveMoney" label="社联预留经费" />
-          <el-table-column align="center" prop="status" label="审核状态" />
-          <el-table-column align="center" label="是否有附件">
-            <template slot-scope="scope">
-              <div v-if="scope.row.hasFile === 1">
-                <a :href="downloadLink + scope.row.applicationId" ref="downloadAnchor" style="display: none;"></a>
+        <div class="detail-table">
+          <el-row>
+            <el-col class="cell header category">1.基本信息</el-col>
+          </el-row>
+          <el-row>
+            <el-col class="cell header" :span="12">申请时间</el-col>
+            <el-col class="cell header" :span="12">活动名称</el-col>
+          </el-row>
+          <el-row>
+            <el-col class="cell" :span="12">{{ applyData.applyDate.split(' ')[0] }}</el-col>
+            <el-col class="cell" :span="12">{{ applyData.activityName }}</el-col>
+          </el-row>
+          <el-row>
+            <el-col class="cell header" :span="12">社团</el-col>
+            <el-col class="cell header" :span="12">社长</el-col>
+          </el-row>
+          <el-row>
+            <el-col class="cell" :span="12">{{ applyData.clubName }}</el-col>
+            <el-col class="cell" :span="12">{{ applyData.chiefName }}</el-col>
+          </el-row>
+          <el-row>
+            <el-col class="cell header category">2.活动信息</el-col>
+          </el-row>
+          <el-row>
+            <el-col class="cell header" :span="8">时间</el-col>
+            <el-col class="cell header" :span="8">地点</el-col>
+            <el-col class="cell header" :span="8">人数</el-col>
+          </el-row>
+          <el-row>
+            <el-col class="cell" :span="8">{{applyData.activityStart | parseDate}} ~ {{applyData.activityEnd | parseDate}}</el-col>
+            <el-col class="cell" :span="8">{{ applyData.activityPlace }}</el-col>
+            <el-col class="cell" :span="8">{{ applyData.activitypeople }}</el-col>
+          </el-row>
+          <el-row>
+            <el-col class="cell header category">3.经费</el-col>
+          </el-row>
+          <el-row>
+            <el-col class="cell header" :span="12">自留经费</el-col>
+            <el-col class="cell header" :span="12">社联预留经费</el-col>
+          </el-row>
+          <el-row>
+            <el-col class="cell" :span="12">¥{{ applyData.selfMoney }}</el-col>
+            <el-col class="cell" :span="12">¥{{ applyData.reserveMoney }}</el-col>
+          </el-row>
+          <el-row>
+            <el-col class="cell header category">4.其他</el-col>
+          </el-row>
+          <el-row>
+            <el-col class="cell header" :span="12">是否为优秀社团</el-col>
+            <el-col class="cell header" :span="12">是否有附件</el-col>
+          </el-row>
+          <el-row>
+            <el-col class="cell" :span="12">{{applyData.isFine === 0 ? '是' : '否'}}</el-col>
+            <el-col class="cell" :span="12">
+              <div v-if="applyData.hasFile === 1">
+                <a :href="downloadLink + applyData.applicationId" ref="downloadAnchor" style="display: none;"></a>
                 <span class="link-type" @click="downloadFile">
                   下载
                 </span>
               </div>
               <span v-else>否</span>
-            </template>
-          </el-table-column>
-        </el-table>
+            </el-col>
+          </el-row>
+        </div>
         <div style="margin-top: 20px;">
           <b>活动简介：</b>
           <p class="indent">{{ applyData.introduce }}</p>
@@ -140,7 +165,7 @@ export default {
       }
     },
     // 审核意见效果
-    checkTagType: ({ result }) => result === '同意' ? 'success' : 'danger'
+    checkTagType: ({ result }) => result === '同意' ? 'passed-result' : 'rejected-result'
   },
   filters: {
     parseDate: (timeStamp) => new Date(+timeStamp).toLocaleDateString()
@@ -165,15 +190,59 @@ export default {
   text-indent: 2em;
 }
 
+.detail-table {
+  position: relative;
+  text-align: center;
+  border-top: 1px solid #ebeef5;
+  border-left: 1px solid #ebeef5;
+
+  .el-row {
+    box-sizing: border-box;
+    &:hover {
+      .cell:not(.header) {
+        background-color: #f5f7fa;
+      }
+    }
+  }
+  .cell {
+    padding: 6px 0;
+    word-break: break-all;
+    line-height: 23px;
+    border-right: 1px solid #ebeef5;
+    border-bottom: 1px solid #ebeef5;
+  }
+  .header {
+    padding: 10px 0;
+    color: #1f2d3d;
+    font-weight: bold;
+  }
+  .category {
+    color: #108de8;
+  }
+}
+
 .check-result {
-  padding-bottom: 20px;
   .result-box {
+    height: 40px;
+    padding: 8px 16px;
+    &.passed-result {
+      background-color: #f0f9eb;
+      color: #67c23a;
+    }
+    &.rejected-result {
+      background-color: #fef0f0;
+      color: #f56c6c;
+    }
     .result {
-      float: left; // line-height: 30px;
+      float: left;
+      line-height: 24px;
     }
     .person {
       float: right;
-      line-height: 30px;
+      line-height: 24px;
+      .black {
+        color: #1f2d3d;
+      }
     }
   }
 }
@@ -182,10 +251,6 @@ export default {
   width: 100%;
   .aside {
     overflow: hidden;
-  }
-
-  .main-content {
-    height: 200px; // background: #e4e;
   }
 }
 </style>

@@ -35,18 +35,13 @@ export default {
       $event.preventDefault()
     },
     addViewTabs() {
-      this.addVisitedViews(this._generateRoute())
+      // console.log(this.$route)
+      if (!this.$route.meta.hideInTab && this.$route.name) {
+        this.addVisitedViews(this.$route)
+      }
     },
     isActive(path) {
       return path === this.$route.path
-    },
-    _generateRoute() {
-      const matched = this.$route.matched
-      if (matched[matched.length - 1].name) {
-        return matched[matched.length - 1]
-      }
-      this.$route.matched[0].path = '/'
-      return this.$route.matched[0]
     },
     ...mapActions([
       'addVisitedViews',

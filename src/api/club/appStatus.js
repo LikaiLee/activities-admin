@@ -68,3 +68,19 @@ export function fetchSelfStatus(status, page, size = 6) {
     }
   })
 }
+/**
+ * 获取自己社团所有申请表情况(status -1 0 1)
+ * @param {Number} page
+ * @param {Number} [size = 6]
+ * @return {Promise}
+ */
+export function fetchSelfAllStatus(page, size = 6) {
+  return request({
+    url: '/club/status/self',
+    method: 'GET',
+    params: {
+      page,
+      size
+    }
+  })
+}

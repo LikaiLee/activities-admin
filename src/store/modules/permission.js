@@ -1,12 +1,13 @@
 import types from '../mutation-types'
 import generateRoutes from '@/utils/generateRoutes'
-import Layout from '@/views/layout'
 import defaultRoutes from '@/router/defaultRoutes'
 import router from '@/router'
 import {
   fetchRoutes
 } from '@/api/menu'
-const _import = require('../../router/_import_' + process.env.NODE_ENV)
+import {
+  getAdminRouter
+} from '@/router/defaultRoutes'
 
 const permission = {
   state: {
@@ -52,16 +53,7 @@ const permission = {
           pathName = '班级管理员'
           break
       }
-      const route = {
-        path: `/student/${adminType}`,
-        hidden: true,
-        component: Layout,
-        children: [{
-          path: ':stuId',
-          name: pathName,
-          component: _import(`student/${adminType}/detail`)
-        }]
-      }
+      const route = getAdminRouter(adminType, pathName)
       router.addRoutes([route])
       commit(types.ADD_ADMIN_ROLE_ROUTE, route)
     }
