@@ -29,7 +29,7 @@
       <el-col v-if="applyData" v-loading="!applyData" :span="16" class="main-content">
         <div class="detail-table">
           <el-row>
-            <el-col class="cell header category">1.基本信息</el-col>
+            <el-col class="cell header category">基本信息</el-col>
           </el-row>
           <el-row>
             <el-col class="cell header" :span="12">申请时间</el-col>
@@ -48,7 +48,7 @@
             <el-col class="cell" :span="12">{{ applyData.chiefName }}</el-col>
           </el-row>
           <el-row>
-            <el-col class="cell header category">2.活动信息</el-col>
+            <el-col class="cell header category">活动信息</el-col>
           </el-row>
           <el-row>
             <el-col class="cell header" :span="8">时间</el-col>
@@ -56,12 +56,12 @@
             <el-col class="cell header" :span="8">人数</el-col>
           </el-row>
           <el-row>
-            <el-col class="cell" :span="8">{{applyData.activityStart | parseDate}} ~ {{applyData.activityEnd | parseDate}}</el-col>
+            <el-col class="cell" :span="8">{{ applyData.activityStart | parseDate }} ~ {{ applyData.activityEnd | parseDate }}</el-col>
             <el-col class="cell" :span="8">{{ applyData.activityPlace }}</el-col>
             <el-col class="cell" :span="8">{{ applyData.activitypeople }}</el-col>
           </el-row>
           <el-row>
-            <el-col class="cell header category">3.经费</el-col>
+            <el-col class="cell header category">经费</el-col>
           </el-row>
           <el-row>
             <el-col class="cell header" :span="12">自留经费</el-col>
@@ -72,7 +72,7 @@
             <el-col class="cell" :span="12">¥{{ applyData.reserveMoney }}</el-col>
           </el-row>
           <el-row>
-            <el-col class="cell header category">4.其他</el-col>
+            <el-col class="cell header category">其他</el-col>
           </el-row>
           <el-row>
             <el-col class="cell header" :span="12">是否为优秀社团</el-col>
@@ -90,10 +90,12 @@
               <span v-else>否</span>
             </el-col>
           </el-row>
-        </div>
-        <div style="margin-top: 20px;">
-          <b>活动简介：</b>
-          <p class="indent">{{ applyData.introduce }}</p>
+          <el-row>
+            <el-col class="cell header category">活动简介</el-col>
+          </el-row>
+          <el-row>
+            <el-col class="cell introduce indent">{{ applyData.introduce }}</el-col>
+          </el-row>
         </div>
       </el-col>
     </el-row>
@@ -174,16 +176,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$passedColor: #67c23a;
+$rejectedColor: #f56c6c;
+$checkingColor: #e6a23c;
+$borderColor: #333;
+
 .passed {
-  color: #67c23a;
+  color: $passedColor;
 }
 
 .rejected {
-  color: #f56c6c;
+  color: $rejectedColor;
 }
 
 .checking {
-  color: #e6a23c;
+  color: $checkingColor;
 }
 
 .indent {
@@ -192,24 +199,24 @@ export default {
 
 .detail-table {
   position: relative;
+  margin-bottom: 20px;
   text-align: center;
-  border-top: 1px solid #ebeef5;
-  border-left: 1px solid #ebeef5;
+  border-top: 1px solid $borderColor;
+  border-left: 1px solid $borderColor;
 
   .el-row {
     box-sizing: border-box;
-    &:hover {
-      .cell:not(.header) {
-        background-color: #f5f7fa;
-      }
-    }
   }
+
   .cell {
     padding: 6px 0;
     word-break: break-all;
     line-height: 23px;
-    border-right: 1px solid #ebeef5;
-    border-bottom: 1px solid #ebeef5;
+    border-right: 1px solid $borderColor;
+    border-bottom: 1px solid $borderColor;
+    &:hover.cell:not(.header) {
+      background-color: #f5f7fa;
+    }
   }
   .header {
     padding: 10px 0;
@@ -217,7 +224,8 @@ export default {
     font-weight: bold;
   }
   .category {
-    color: #108de8;
+    color: #333;
+    background: #e4e4e4;
   }
 }
 
@@ -227,11 +235,11 @@ export default {
     padding: 8px 16px;
     &.passed-result {
       background-color: #f0f9eb;
-      color: #67c23a;
+      color: $passedColor;
     }
     &.rejected-result {
       background-color: #fef0f0;
-      color: #f56c6c;
+      color: $rejectedColor;
     }
     .result {
       float: left;
@@ -248,9 +256,12 @@ export default {
 }
 
 .container {
-  width: 100%;
+  width: 100%; // overflow: hidden;
   .aside {
     overflow: hidden;
+  }
+  .introduce {
+    text-align: left;
   }
 }
 </style>

@@ -90,13 +90,13 @@ export default {
 
 .login {
   @include relative;
-  background: url('../../assets/login_bg.jpg') center center;
+  background: url('../../assets/bg_school.jpg');
   background-size: cover;
 
   &-cont {
     width: 300px;
     position: absolute;
-    right: 60px;
+    right: 15%;
     top: 50%;
     transform: translateY(-60%);
 
@@ -112,7 +112,7 @@ export default {
     position: absolute;
     top: 50%;
     left: 6%;
-    transform: translateY(-50%);
+    transform: translateY(-60%);
   }
 }
 </style>

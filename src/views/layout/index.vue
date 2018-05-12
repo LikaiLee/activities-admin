@@ -5,6 +5,11 @@
       <navbar></navbar>
       <app-main></app-main>
     </div>
+    <div :class="{'offset': user}" class="copyright" ref="copyright">
+      Copyright &copy; {{ new Date().getFullYear() }}
+      <i class="el-icon-fa-heartbeat"></i>
+      Powered by <a class="link-type" href="http://betahouse.us" target="_black">β-house</a>
+    </div>
   </div>
 </template>
 
@@ -13,7 +18,6 @@ import { mapGetters } from 'vuex'
 import Navbar from './Navbar'
 import AppMain from './AppMain'
 import Sidebar from '@/components/Sidebar'
-// :class="{computedOffset}"
 export default {
   name: 'Layout',
   components: {
@@ -41,6 +45,16 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "../../styles/mixin.scss";
+
+.copyright {
+  // position: absolute;
+  text-align: center;
+  line-height: 30px;
+  margin-top: -30px;
+  background: #ebeef5;
+  color: #1f2d3d;
+}
+
 .offset {
   margin-left: 180px;
 }
@@ -56,7 +70,9 @@ export default {
       overflow: hidden;
     }
     .main-container {
+      position: relative;
       margin-left: 65px;
+      min-height: 100%;
     }
   }
   .sidebar-container {
@@ -74,8 +90,7 @@ export default {
   }
   .main-container {
     min-height: 100%;
-    transition: margin-left 0.28s ease-out;
-    // margin-left: 180px;
+    transition: margin-left 0.28s ease-out; // margin-left: 180px;
   }
 }
 </style>

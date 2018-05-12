@@ -16,10 +16,12 @@
               <p>标题: {{ scope.row.title }}</p>
               <p>发布者: {{ scope.row.author }}</p>
               <p>日期: {{ scope.row.date | dateFormatter }}</p>
-              <div slot="reference" class="name-wrapper">
-                <span class="link-type" @click.prevent="informClickHandler(scope.row)">
-                  <i class="el-icon-fa-pencil-square-o"></i>&nbsp;&nbsp;{{scope.row.title}}
-                </span>
+              <div slot="reference">
+                <div class="link-type name-wrapper" @click.prevent="informClickHandler(scope.row)">
+                  <i class="el-icon-fa-pencil-square-o"></i>
+                  &nbsp;&nbsp;
+                  <div class="title">{{scope.row.title}}</div>
+                </div>
               </div>
             </el-popover>
           </template>
@@ -56,7 +58,8 @@ export default {
   },
   methods: {
     informClickHandler(inform) {
-      this.$router.push(`/inform/detail/${inform.informId}`)
+      // this.$router.push(`/inform/detail/${inform.informId}`)
+      window.open(`/inform/detail/${inform.informId}`, '_blank')
     },
     nextPage() {
       this.informPage++
@@ -104,6 +107,17 @@ export default {
 
   &-card {
     width: 100%;
+    .name-wrapper {
+      width: 325px;
+      height: 22px;
+      .title {
+        float: right;
+        width: 90%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
   }
 }
 </style>

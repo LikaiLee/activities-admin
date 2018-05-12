@@ -36,7 +36,7 @@
           <el-form-item label="剩余自留经费" prop="selfMoney">
             <el-input-number v-model="form.selfMoney" :min="0" controls-position="right" label="剩余自留经费" />
           </el-form-item>
-          <el-form-item label="剩余社联预留经费">
+          <el-form-item label="剩余社联预留经费" prop="reserveMoney">
             <el-input-number v-model="form.reserveMoney" :min="0" controls-position="right" label="剩余社联预留经费" />
           </el-form-item>
           <el-form-item label="是否是优秀社团活动" prop="isFine">
@@ -50,7 +50,7 @@
             <el-button @click="selectFile">选择文件</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="handleSubmit">立即申请</el-button>
+            <el-button type="primary" ref="btnSubmit" @click="handleSubmit">立即申请</el-button>
             <el-button @click="resetForm">重置</el-button>
           </el-form-item>
         </el-form>
@@ -136,19 +136,48 @@ export default {
         this.loading = false
       })
     },
+    checkVal() {
+      const { name, place, people, introduce } = this.form
+      let msg = ''
+      if (!name) {
+        msg = '活动名称不能为空！'
+      } else if (!place) {
+        msg = '活动地点不能为空!'
+      } else if (!this.dateRange.length) {
+        msg = '活动时间不能为空!'
+      } else if (!people) {
+        msg = '参与对象及人数不能为空!'
+      } else if (!introduce) {
+        msg = '活动简介不能为空!'
+      }
+      return msg
+    },
     // 提交新申请
     handleSubmit() {
+      const msg = this.checkVal()
+      if (msg) {
+        this.$message({
+          message: msg,
+          type: 'warning'
+        })
+        return
+      }
+
+      this.$refs.btnSubmit.disabled = true
+      setTimeout(() => {
+        this.$refs.btnSubmit.disabled = false
+      }, 3000)
       this.form.isFine = this.isFine ? 0 : 1
       this.form.start = new Date(this.dateRange[0]).getTime() + ''
       this.form.end = new Date(this.dateRange[1]).getTime() + ''
-      postApproval(this.form).then(({ status, message }) => {
+      postApproval(this.form).then(res => {
+        if (res.status === 200) {
+          window.location.reload()
+        }
+      }).catch((err) => {
+        console.log(err)
         this.$message({
-          message,
-          type: status === 200 ? 'success' : 'error'
-        })
-      }).catch(() => {
-        this.$message({
-          message: 'error',
+          message: '提交失败',
           type: 'error'
         })
       })

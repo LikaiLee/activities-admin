@@ -1,14 +1,13 @@
 <template>
-  <div class="inform-detail">
+  <div v-cloak class="inform-detail">
     <div class="inform-detail-container" v-if="data">
-      <h1>{{data.title}}</h1>
-      <p>来源：{{data.author}} 发布时间：{{data.date}}</p>
+      <div class="title-wrapper">
+        <div class="title">{{data.title}}</div>
+        <p>来源：{{data.author}} 发布时间：{{data.date}}</p>
+      </div>
       <hr>
-      <div v-html="data.content" />
-      <el-button @click="back" icon="el-icon-fa-home" size="mini"></el-button>
-    </div>
-    <div v-else>
-      无数据
+      <div class="content" v-html="data.content" />
+      <!-- <el-button class="btn-back" @click="back" icon="el-icon-fa-home" size="mini">返回登录页</el-button> -->
     </div>
   </div>
 </template>
@@ -53,16 +52,25 @@ export default {
 .inform-detail {
   width: 100%;
   height: 100%;
-  background: url('../../../assets/login_bg.jpg');
-  background-size: cover;
-  overflow: hidden;
+  background: url('../../../assets/bg_school.jpg') center center;
+  background-size: 100% 100%;
   &-container {
     position: relative;
-    margin: 0 auto;
-    text-align: center;
-    background: rgba(255, 255, 255, .7);
+    margin: 0 auto; // background: rgba(255, 255, 255, .7);
+    background: #fafafa;
     width: 70%;
-    height: 100%;
+    min-height: 100%;
+    .title-wrapper {
+      text-align: center;
+    }
+    .title {
+      font-size: 30px;
+      font-weight: bold;
+      line-height: 50px;
+    }
+    .content {
+      min-height: 100%;
+    }
   }
 }
 </style>

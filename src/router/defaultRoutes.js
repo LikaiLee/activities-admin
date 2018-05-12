@@ -49,6 +49,7 @@ export default [{
   {
     path: '/inform/detail/:id',
     hidden: true,
+    name: '通知详情',
     component: _import('inform/detail/index')
   },
   {
