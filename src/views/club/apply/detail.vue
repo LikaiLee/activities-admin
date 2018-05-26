@@ -25,6 +25,22 @@
             </div>
           </el-collapse-item>
         </el-collapse>
+        <div v-if="approvalLV.authorized" class="approval-container">
+          <div class="title">
+            <i class="el-icon-fa-flag" />&nbsp;&nbsp;{{ approvalLV.title }}</div>
+          <div>
+            <el-form>
+              <el-form-item label="是否同意" style="margin-bottom: 0px;">
+                <el-radio v-model="isAgreed" label="1">同意</el-radio>
+                <el-radio v-model="isAgreed" label="0">不同意</el-radio>
+              </el-form-item>
+              <el-form-item label="评语">
+                <el-input type="textarea" v-model="comment" :autosize="{ minRows: 4}"></el-input>
+              </el-form-item>
+              <el-button type="primary" ref="btnSubmit" @click="handleSubmit">提交审核</el-button>
+            </el-form>
+          </div>
+        </div>
       </el-col>
       <el-col v-if="applyData" v-loading="!applyData" :span="16" class="main-content">
         <div class="detail-table">
@@ -104,8 +120,7 @@
 
 <script>
 import { fetchApprovalById } from '@/api/club/app'
-// import { postApproval } from '@/api/club/appApprove'
-// postApproval({ appId, result, comment })
+import { fetchApprovalLv, postApproval } from '@/api/club/appApprove'
 export default {
   data() {
     return {
@@ -137,20 +152,75 @@ export default {
           level: 'lv4'
         }
       ],
-      downloadLink: `${process.env.BASE_URL}/club/app/file?id=`
+      downloadLink: `${process.env.BASE_URL}/club/app/file?id=`,
+      approvalLV: {
+        authorized: false,
+        title: ''
+      },
+      isAgreed: false,
+      comment: ''
     }
   },
   mounted() {
-    this.applyId = this.$route.params.applyId
+    this.applyId = +this.$route.params.applyId
     fetchApprovalById(this.applyId).then(({ data }) => {
       this.applyData = data
     }).then(() => {
       this.checkResults.lv2 = this.applyData.results.find(_ => _.approvalLV === 2)
       this.checkResults.lv3 = this.applyData.results.find(_ => _.approvalLV === 3)
       this.checkResults.lv4 = this.applyData.results.find(_ => _.approvalLV === 4)
+      // 2 审批财务
+      // 3 场地和社联审批
+      // 4 团委审批
+      // this.applyData.lv === 100 失败 -> 不可审批
+      fetchApprovalLv().then(({ data }) => {
+        // 审核阶段
+        const phaseLv = this.applyData.lv
+        const authorizedRight = data.data
+        if (data.status === 200 && phaseLv !== 100 && phaseLv === authorizedRight) {
+          this.approvalLV.authorized = true
+          switch (authorizedRight) {
+            case 2:
+              this.approvalLV.title = '财务审批'
+              break
+            case 3:
+              this.approvalLV.title = '场地和社联审批'
+              break
+            case 4:
+              this.approvalLV.title = '团委审批'
+              break
+          }
+        }
+      })
     })
   },
   methods: {
+    // 提交审批
+    handleSubmit() {
+      if (!this.isAgreed) {
+        this.$message({
+          type: 'warning',
+          message: '请选择是否同意该申请！'
+        })
+        return
+      }
+      postApproval({
+        appId: this.applyId,
+        result: +this.isAgreed,
+        comment: this.comment
+      }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '审核成功！'
+        })
+        window.location.reload()
+      }).catch(() => {
+        this.$message({
+          type: 'error',
+          message: '审核失败！'
+        })
+      })
+    },
     downloadFile() {
       this.$refs.downloadAnchor.click()
     },
@@ -195,6 +265,14 @@ $borderColor: #333;
 
 .indent {
   text-indent: 2em;
+}
+
+.approval-container {
+  margin-top: 20px;
+  .title {
+    line-height: 30px;
+    border-bottom: 1px solid #ebeef5;
+  }
 }
 
 .detail-table {
@@ -265,4 +343,3 @@ $borderColor: #333;
   }
 }
 </style>
-

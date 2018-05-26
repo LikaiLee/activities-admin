@@ -30,6 +30,7 @@ service.interceptors.request.use(config => {
     config.method === 'put') {
     config.data = qs.stringify(config.data)
   }
+  // console.log(config)
   return config
 }, error => {
   console.log(error)
