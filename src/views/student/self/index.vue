@@ -92,7 +92,7 @@ export default {
       term: this._currentTerm(),
       student: null,
       curPage: 0,
-      pageSize: 3,
+      pageSize: 10,
       curList: [],
       pageDataType: scoreTypes.ACTIVITY,
       fromIndex: 1,

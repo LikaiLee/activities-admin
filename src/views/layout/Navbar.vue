@@ -81,7 +81,7 @@ export default {
     },
     logOut() {
       this.logout().then(() => {
-        setTimeout(() => { window.location.reload() }, 100)// 为了重新实例化vue-router对象 避免bug
+        setTimeout(() => { window.location.href = '/' }, 100)// 为了重新实例化vue-router对象 避免bug
       })
     },
     ...mapActions([

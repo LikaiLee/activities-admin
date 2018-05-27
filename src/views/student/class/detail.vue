@@ -80,7 +80,7 @@ export default {
       semester: this.getCurSemester(),
       student: null,
       curPage: 0,
-      pageSize: 3,
+      pageSize: 10,
       curList: [],
       pageDataType: scoreTypes.ACTIVITY,
       fromIndex: 1,

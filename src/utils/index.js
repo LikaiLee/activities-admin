@@ -3,5 +3,5 @@ import {
 } from '@/config'
 
 export function pathInWhiteList(path) {
-  return WHITE_LIST.some((item) => path.includes(item))
+  return WHITE_LIST.some((white) => path.includes(white))
 }
