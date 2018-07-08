@@ -16,6 +16,12 @@
     <el-table-column prop="chiefName" label="社长" />
     <el-table-column prop="clubName" label="社团" />
     <el-table-column prop="status" label="状态" />
+    <el-table-column v-if="showOperate" align="center" label="操作" width="150">
+        <template slot-scope="scope">
+          <el-button size="small" type="danger" @click="emitDelete(scope.row)">删除
+          </el-button>
+        </template>
+      </el-table-column>
   </el-table>
 </template>
 
@@ -34,9 +40,16 @@ export default {
     fromIndex: {
       type: Number,
       default: 1
+    },
+    showOperate: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
+    emitDelete(row) {
+      this.$emit('delete', row)
+    },
     // 显示申请详情
     showDetail({ applicationId }) {
       this.$router.push(`/club/apply/detail/${applicationId}`)

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row :gutter="20" class="container">
-      <el-col :span="8" class="aside">
+      <el-col v-if="applyData" :span="8" class="aside">
         <el-collapse :accordion="false">
           <el-collapse-item v-for="(record, index) in checkData" :key="index">
             <template slot="title">
@@ -37,7 +37,7 @@
               <el-form-item label="评语">
                 <el-input type="textarea" v-model="comment" :autosize="{ minRows: 4}"></el-input>
               </el-form-item>
-              <el-button type="primary" ref="btnSubmit" @click="handleSubmit">提交审核</el-button>
+              <el-button type="primary" :loading="btnSubmitLoading" ref="btnSubmit" @click="handleSubmit">提交审核</el-button>
             </el-form>
           </div>
         </div>
@@ -158,7 +158,8 @@ export default {
         title: ''
       },
       isAgreed: false,
-      comment: ''
+      comment: '',
+      btnSubmitLoading: false
     }
   },
   mounted() {
@@ -204,6 +205,7 @@ export default {
         })
         return
       }
+      this.btnSubmitLoading = true
       postApproval({
         appId: this.applyId,
         result: +this.isAgreed,
@@ -213,13 +215,16 @@ export default {
           type: 'success',
           message: '审核成功！'
         })
+        this.btnSubmitLoading = false
         window.location.reload()
       }).catch(() => {
+        this.btnSubmitLoading = false
         this.$message({
           type: 'error',
           message: '审核失败！'
         })
       })
+      this.btnSubmitLoading = false
     },
     downloadFile() {
       this.$refs.downloadAnchor.click()

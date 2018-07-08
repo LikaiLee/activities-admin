@@ -2,19 +2,19 @@
   <div>
     <el-tabs @tab-click="handleClick" :value="curTabType" v-loading="loading" type="card">
       <el-tab-pane name="all" label="全部">
-        <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
+        <apply-table :showOperate="true" @delete="handleDelete" :curList="curList" :loading="loading" :fromIndex="fromIndex" />
       </el-tab-pane>
       <el-tab-pane name="needCheck" label="需要审批">
-        <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
+        <apply-table :showOperate="true" @delete="handleDelete" :curList="curList" :loading="loading" :fromIndex="fromIndex" />
       </el-tab-pane>
       <el-tab-pane name="checking" label="审批中">
-        <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
+        <apply-table :showOperate="true" @delete="handleDelete" :curList="curList" :loading="loading" :fromIndex="fromIndex" />
       </el-tab-pane>
       <el-tab-pane name="rejected" label="未通过">
-        <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
+        <apply-table :showOperate="true" @delete="handleDelete" :curList="curList" :loading="loading" :fromIndex="fromIndex" />
       </el-tab-pane>
       <el-tab-pane name="passed" label="已通过">
-        <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
+        <apply-table :showOperate="true" @delete="handleDelete" :curList="curList" :loading="loading" :fromIndex="fromIndex" />
       </el-tab-pane>
     </el-tabs>
     <simple-pagination @pageChanged="handlePageChanged" :show="!loading" :fromPage="curPage" :data="curList" :pageSize="pageSize" class="pagination" />
@@ -26,6 +26,7 @@
 import ApplyTable from '@/components/ApplyTable'
 import SimplePagination from '@/components/SimplePagination'
 import { fetchAllStatus, fetchStatusByType, fetchNeedApprove } from '@/api/club/appStatus'
+import { deleteAdminById } from '@/api/club/app'
 
 export default {
   data() {
@@ -42,6 +43,17 @@ export default {
     this.getNeedCheck()
   },
   methods: {
+    handleDelete({ applicationId }) {
+      deleteAdminById(applicationId).then(res => {
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        })
+        this.switchGetData()
+      }).catch(error => {
+        console.error(error)
+      })
+    },
     // 申请状态标签页
     handleClick(tab) {
       this.curTabType = tab.name

@@ -25,3 +25,18 @@ export function fetchApprovalById(id) {
 export function postApproval(data) {
   return uploadFile('/club/app', data)
 }
+
+/**
+ * 删除自己申请
+ * @param {Number} id
+ */
+export function deleteOwnById(id) {
+  return request.delete(`/club/app/self?id=${id}`)
+}
+/**
+ * 管理员删除申请
+ * @param {Number} id
+ */
+export function deleteAdminById(id) {
+  return request.delete(`/club/app/admin?id=${id}`)
+}

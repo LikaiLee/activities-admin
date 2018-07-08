@@ -4,22 +4,26 @@
       <el-tab-pane label="已提交申请">
         <el-tabs :value="curTabType" @tab-click="handleTabClick" tab-position="left">
           <el-tab-pane name="all" label="全部">
-            <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
+            <apply-table :showOperate="true" @delete="handleDelete" :curList="curList" :loading="loading" :fromIndex="fromIndex" />
           </el-tab-pane>
           <el-tab-pane name="checking" label="审批中">
-            <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
+            <apply-table :showOperate="true" @delete="handleDelete" :curList="curList" :loading="loading" :fromIndex="fromIndex" />
           </el-tab-pane>
           <el-tab-pane name="rejected" label="未通过">
-            <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
+            <apply-table :showOperate="true" @delete="handleDelete" :curList="curList" :loading="loading" :fromIndex="fromIndex" />
           </el-tab-pane>
           <el-tab-pane name="passed" label="已通过">
-            <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
+            <apply-table :showOperate="true" @delete="handleDelete" :curList="curList" :loading="loading" :fromIndex="fromIndex" />
           </el-tab-pane>
         </el-tabs>
         <simple-pagination @pageChanged="handlePageChanged" :show="!loading" :fromPage="curPage" :data="curList" :pageSize="pageSize" class="pagination" />
       </el-tab-pane>
       <el-tab-pane label="提交新申请">
         <el-form style="width: 550px;" ref="form" :model="form" label-position="right" label-width="150px">
+          <el-form-item label="社团名称">
+            <!-- <el-input placeholder="社团名称" v-model="clubName" /> -->
+            {{ clubName }}
+          </el-form-item>
           <el-form-item label="活动名称" prop="name">
             <el-input placeholder="活动名称" v-model="form.name" />
           </el-form-item>
@@ -63,13 +67,15 @@
 // 社长提交申请
 import ApplyTable from '@/components/ApplyTable'
 import SimplePagination from '@/components/SimplePagination'
-import { postApproval } from '@/api/club/app'
+import { postApproval, deleteOwnById } from '@/api/club/app'
 import { fetchSelfStatus, fetchSelfAllStatus } from '@/api/club/appStatus'
+import { fetchClub } from '@/api/club'
 export default {
   data() {
     return {
       dateRange: [],
       isFine: false,
+      clubName: '',
       form: {
         name: '',
         place: '',
@@ -79,7 +85,7 @@ export default {
         introduce: '',
         file: null
       },
-      curTabType: 'all',
+      curTabType: 'checking',
       curList: [],
       loading: false,
       fromIndex: 1,
@@ -89,8 +95,24 @@ export default {
   },
   created() {
     this.getApply()
+    fetchClub().then(res => {
+      this.clubName = res.data.clubName
+    }).catch(err => {
+      console.log(err)
+    })
   },
   methods: {
+    handleDelete({ applicationId }) {
+      deleteOwnById(applicationId).then(res => {
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        })
+        this.curTabType === 'all' ? this.getAll() : this.getApply()
+      }).catch(error => {
+        console.error(error)
+      })
+    },
     // 申请状态标签页
     handleTabClick(tab) {
       this.curTabType = tab.name
